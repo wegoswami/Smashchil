@@ -84,7 +84,7 @@ export interface Translations {
 
 export const translations: Record<Language, Translations> = {
   en: {
-    appName: 'Catharsis',
+    appName: 'SmashChill',
     tagline: 'Smash your stress. Find your calm.',
     modes: {
       rage: 'Smash Room',
@@ -171,7 +171,7 @@ export const translations: Record<Language, Translations> = {
     },
   },
   hi: {
-    appName: 'Catharsis',
+    appName: 'SmashChill',
     tagline: 'भड़ास निकालो, दिल को शांत करो।',
     modes: {
       rage: 'भड़ास रूम (Smash)',
@@ -258,7 +258,7 @@ export const translations: Record<Language, Translations> = {
     },
   },
   es: {
-    appName: 'Catharsis',
+    appName: 'SmashChill',
     tagline: 'Destruye tu estrés. Encuentra tu calma.',
     modes: {
       rage: 'Sala de Furia',
@@ -345,7 +345,7 @@ export const translations: Record<Language, Translations> = {
     },
   },
   ja: {
-    appName: 'Catharsis',
+    appName: 'SmashChill',
     tagline: 'ストレスを破壊し、心の静けさを取り戻す。',
     modes: {
       rage: '破壊部屋',
@@ -432,7 +432,7 @@ export const translations: Record<Language, Translations> = {
     },
   },
   de: {
-    appName: 'Catharsis',
+    appName: 'SmashChill',
     tagline: 'Zerstöre deinen Stress. Finde deine Ruhe.',
     modes: {
       rage: 'Wutraum',
@@ -519,7 +519,7 @@ export const translations: Record<Language, Translations> = {
     },
   },
   fr: {
-    appName: 'Catharsis',
+    appName: 'SmashChill',
     tagline: 'Détruisez le stress. Retrouvez votre sérénité.',
     modes: {
       rage: 'Salle de Rage',

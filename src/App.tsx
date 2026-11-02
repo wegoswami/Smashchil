@@ -178,7 +178,7 @@ export default function App() {
       <footer className="border-t border-slate-900 bg-slate-950/80 px-6 py-3 text-xs text-slate-500">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           <div className="flex items-center gap-2">
-            <span className="font-extrabold text-slate-300">CATHARSIS ARCADE</span>
+            <span className="font-extrabold text-slate-300">SMASHCHILL ARCADE</span>
             <span aria-hidden="true">·</span>
             <span>Worldwide Stress Relief & Ranking Games</span>
           </div>

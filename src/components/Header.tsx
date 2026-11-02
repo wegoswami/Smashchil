@@ -47,7 +47,7 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={() => setActiveMode('whack')}
           className="text-xl sm:text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-500 to-pink-500 hover:opacity-90 transition-opacity flex items-center gap-1.5 cursor-pointer"
         >
-          <span>⚡ CATHARSIS</span>
+          <span>⚡ SMASHCHILL</span>
           <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-rose-600/30 text-rose-400 border border-rose-500/40 font-bold uppercase tracking-wider">
             Arcade
           </span>

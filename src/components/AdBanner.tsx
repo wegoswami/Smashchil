@@ -11,7 +11,7 @@ interface AdBannerProps {
 
 export const AdBanner: React.FC<AdBannerProps> = ({
   format = 'leaderboard',
-  adClient = 'ca-pub-0000000000000000',
+  adClient = 'ca-pub-7658190454263901',
   adSlot = '1234567890',
   className = '',
   onRewardClick,

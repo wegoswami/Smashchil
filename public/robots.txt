@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://catharsis-arcade.vercel.app/sitemap.xml
+Sitemap: https://smashchill.vercel.app/sitemap.xml
