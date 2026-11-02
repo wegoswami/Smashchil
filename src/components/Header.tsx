@@ -1,5 +1,5 @@
 import React from 'react';
-import { Volume2, VolumeX, Trophy, Music, Disc } from 'lucide-react';
+import { Volume2, VolumeX, Trophy, Music, Maximize, Minimize, Shield, Gift } from 'lucide-react';
 import { sound } from '../utils/audio';
 
 export type GameMode = 'whack' | 'ninja' | 'slap' | 'smash' | 'bubble' | 'zen';
@@ -11,8 +11,13 @@ interface HeaderProps {
   setIsMuted: (muted: boolean) => void;
   isBgmPlaying: boolean;
   onToggleBgm: () => void;
+  coins: number;
+  onOpenArmory: () => void;
+  onOpenQuests: () => void;
   onOpenLeaderboard: () => void;
   onOpenStats: () => void;
+  isFullscreen: boolean;
+  onToggleFullscreen: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -22,8 +27,13 @@ export const Header: React.FC<HeaderProps> = ({
   setIsMuted,
   isBgmPlaying,
   onToggleBgm,
+  coins,
+  onOpenArmory,
+  onOpenQuests,
   onOpenLeaderboard,
   onOpenStats,
+  isFullscreen,
+  onToggleFullscreen,
 }) => {
   const handleToggleSound = () => {
     const next = sound.toggleMute();
@@ -40,22 +50,22 @@ export const Header: React.FC<HeaderProps> = ({
   ];
 
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between gap-6 px-4 sm:px-6 py-3.5 bg-slate-950/90 backdrop-blur-md border-b-2 border-slate-800">
+    <header className="sticky top-0 z-50 flex items-center justify-between gap-4 px-3 sm:px-6 py-3 bg-slate-950/90 backdrop-blur-md border-b-2 border-slate-800 select-none">
       {/* Zone 1: Wordmark */}
       <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={() => setActiveMode('whack')}
-          className="text-xl sm:text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-500 to-pink-500 hover:opacity-90 transition-opacity flex items-center gap-1.5 cursor-pointer"
+          className="text-lg sm:text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-500 to-pink-500 hover:opacity-90 transition-opacity flex items-center gap-1.5 cursor-pointer"
         >
           <span>⚡ SMASHCHILL</span>
-          <span className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full bg-rose-600/30 text-rose-400 border border-rose-500/40 font-bold uppercase tracking-wider">
-            Arcade
+          <span className="text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full bg-rose-600/30 text-rose-400 border border-rose-500/40 font-bold uppercase tracking-wider">
+            PRO
           </span>
         </button>
       </div>
 
       {/* Zone 2: Fast game switcher links */}
-      <nav className="hidden lg:flex items-center gap-2 text-xs font-bold text-slate-300">
+      <nav className="hidden xl:flex items-center gap-2 text-xs font-bold text-slate-300">
         {games.map((g) => {
           const isActive = activeMode === g.id;
           return (
@@ -78,8 +88,38 @@ export const Header: React.FC<HeaderProps> = ({
         })}
       </nav>
 
-      {/* Zone 3: BGM, Sound, Leaderboard & Stats */}
-      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+      {/* Zone 3: Coins, Armory, Quests, BGM & Fullscreen */}
+      <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+        {/* Coin wallet */}
+        <button
+          onClick={onOpenArmory}
+          className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-900 border border-amber-500/40 hover:border-amber-400 text-amber-400 text-xs font-black font-mono tabular-nums transition-colors cursor-pointer shadow-inner"
+          title="Open Armory"
+        >
+          <span>🪙</span>
+          <span>{coins.toLocaleString()}</span>
+        </button>
+
+        {/* Armory */}
+        <button
+          onClick={onOpenArmory}
+          title="Weapon Armory"
+          className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer hidden sm:flex items-center gap-1 text-xs font-bold"
+        >
+          <Shield className="w-4 h-4 text-amber-400" />
+          <span>Gear</span>
+        </button>
+
+        {/* Daily Quests */}
+        <button
+          onClick={onOpenQuests}
+          title="Daily Quests & Streak"
+          className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer flex items-center gap-1 text-xs font-bold"
+        >
+          <Gift className="w-4 h-4 text-emerald-400" />
+          <span className="hidden md:inline">Quests</span>
+        </button>
+
         {/* Lo-Fi Music Toggle */}
         <button
           onClick={onToggleBgm}
@@ -92,7 +132,7 @@ export const Header: React.FC<HeaderProps> = ({
           aria-label="Lo-Fi BGM"
         >
           <Music className="w-4 h-4" />
-          <span className="hidden md:inline">{isBgmPlaying ? 'BGM ON' : 'BGM'}</span>
+          <span className="hidden lg:inline">{isBgmPlaying ? 'BGM ON' : 'BGM'}</span>
         </button>
 
         {/* Audio Sound FX Toggle */}
@@ -108,10 +148,19 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Worldwide Leaderboard button */}
         <button
           onClick={onOpenLeaderboard}
-          className="flex items-center gap-1.5 px-3 sm:px-4 py-2 text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl transition-all shadow-md cursor-pointer hover:scale-105 active:scale-95 shrink-0"
+          className="flex items-center gap-1 px-3 py-1.5 sm:py-2 text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl transition-all shadow-md cursor-pointer hover:scale-105 active:scale-95 shrink-0"
         >
-          <Trophy className="w-4 h-4" />
-          <span className="hidden sm:inline">Rankings</span>
+          <Trophy className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">Ranks</span>
+        </button>
+
+        {/* Fullscreen Pro Toggle */}
+        <button
+          onClick={onToggleFullscreen}
+          title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+          className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer hidden sm:block"
+        >
+          {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
         </button>
       </div>
     </header>

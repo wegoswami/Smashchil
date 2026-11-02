@@ -16,6 +16,7 @@ class SoundEngine {
   private bgmInterval: number | null = null;
   private isBgmPlaying: boolean = false;
   private bgmStep: number = 0;
+  private currentStation: 'chill' | 'synthwave' | 'zen' = 'chill';
 
   constructor() {
     // AudioContext will be initialized on first user interaction
@@ -493,13 +494,29 @@ class SoundEngine {
     this.isBgmPlaying = true;
     this.bgmStep = 0;
 
-    // Chill lo-fi arpeggiated chord sequence (Dm9 -> G13 -> Cmaj9 -> Am9)
-    const chords = [
-      [293.66, 349.23, 440.0, 523.25, 659.25], // D4, F4, A4, C5, E5
-      [196.0, 293.66, 392.0, 493.88, 659.25],  // G3, D4, G4, B4, E5
-      [261.63, 329.63, 392.0, 493.88, 587.33], // C4, E4, G4, B4, D5
-      [220.0, 329.63, 440.0, 523.25, 659.25],  // A3, E4, A4, C5, E5
-    ];
+    // 3 Unique Musical Stations
+    const stationChords: Record<string, number[][]> = {
+      chill: [
+        [293.66, 349.23, 440.0, 523.25, 659.25], // Dm9
+        [196.0, 293.66, 392.0, 493.88, 659.25],  // G13
+        [261.63, 329.63, 392.0, 493.88, 587.33], // Cmaj9
+        [220.0, 329.63, 440.0, 523.25, 659.25],  // Am9
+      ],
+      synthwave: [
+        [130.81, 196.0, 261.63, 392.0], // C3 Arp
+        [146.83, 220.0, 293.66, 440.0], // D3 Arp
+        [164.81, 246.94, 329.63, 493.88], // E3 Arp
+        [174.61, 261.63, 349.23, 523.25], // F3 Arp
+      ],
+      zen: [
+        [261.63, 329.63, 392.0, 523.25], // C major pentatonic
+        [293.66, 369.99, 440.0, 587.33], // D pentatonic
+        [329.63, 392.0, 493.88, 659.25], // E pentatonic
+        [261.63, 392.0, 523.25, 783.99], // C octave
+      ],
+    };
+
+    const chords = stationChords[this.currentStation] || stationChords.chill;
 
     this.bgmInterval = window.setInterval(() => {
       if (!this.isBgmPlaying || !this.ctx || !this.masterGain || this.isMuted) return;
@@ -513,12 +530,13 @@ class SoundEngine {
       const osc = this.ctx.createOscillator();
       const gain = this.ctx.createGain();
 
-      osc.type = 'sine';
+      osc.type = this.currentStation === 'synthwave' ? 'sawtooth' : 'sine';
       osc.frequency.setValueAtTime(freq, t);
 
-      // Warm lo-fi tape saturation vibe
+      // Warm analog vibe
+      const peakVol = this.currentStation === 'synthwave' ? 0.07 : 0.12;
       gain.gain.setValueAtTime(0.001, t);
-      gain.gain.linearRampToValueAtTime(0.12, t + 0.04);
+      gain.gain.linearRampToValueAtTime(peakVol, t + 0.04);
       gain.gain.exponentialRampToValueAtTime(0.001, t + 0.55);
 
       osc.connect(gain);
@@ -527,9 +545,21 @@ class SoundEngine {
       osc.stop(t + 0.6);
 
       this.bgmStep = (this.bgmStep + 1) % 16;
-    }, 280);
+    }, this.currentStation === 'synthwave' ? 200 : 280);
 
     return true;
+  }
+
+  public setStation(station: 'chill' | 'synthwave' | 'zen') {
+    this.currentStation = station;
+    if (this.isBgmPlaying) {
+      this.toggleBgm(); // stop
+      this.toggleBgm(); // restart with new station
+    }
+  }
+
+  public getStation(): string {
+    return this.currentStation;
   }
 
   public getBgmPlaying(): boolean {

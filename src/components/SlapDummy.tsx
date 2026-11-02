@@ -3,6 +3,7 @@ import { Sparkles, Trophy, RotateCcw } from 'lucide-react';
 import { sound } from '../utils/audio';
 
 type SlapWeapon = 'hand' | 'glove' | 'fish' | 'hammer' | 'balloon';
+type DummyHat = 'none' | 'crown' | 'horns' | 'glasses' | 'party' | 'helmet';
 
 interface SlapParticle {
   id: number;
@@ -14,10 +15,15 @@ interface SlapParticle {
   alpha: number;
 }
 
-export const SlapDummy: React.FC = () => {
+interface SlapDummyProps {
+  onSlapHit?: () => void;
+}
+
+export const SlapDummy: React.FC<SlapDummyProps> = ({ onSlapHit }) => {
   const [slapCount, setSlapCount] = useState<number>(0);
   const [combo, setCombo] = useState<number>(0);
   const [weapon, setWeapon] = useState<SlapWeapon>('hand');
+  const [hat, setHat] = useState<DummyHat>('glasses');
   const [wobbleOffset, setWobbleOffset] = useState<number>(0);
   const [faceExpression, setFaceExpression] = useState<'normal' | 'hit' | 'dizzy' | 'ko'>('normal');
   const [particles, setParticles] = useState<SlapParticle[]>([]);
@@ -125,22 +131,48 @@ export const SlapDummy: React.FC = () => {
           )}
         </div>
 
-        {/* Weapons picker */}
-        <div className="flex items-center gap-1.5 p-1 bg-slate-950 rounded-xl border border-slate-800">
-          {weapons.map((w) => (
-            <button
-              key={w.id}
-              onClick={() => setWeapon(w.id)}
-              title={w.name}
-              className={`p-2 rounded-lg text-lg transition-all ${
-                weapon === w.id
-                  ? 'bg-rose-600 text-white shadow scale-110'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-900'
-              }`}
-            >
-              {w.icon}
-            </button>
-          ))}
+        {/* Weapons and Hat pickers */}
+        <div className="flex items-center gap-2">
+          {/* Hat selector */}
+          <div className="flex items-center gap-1 p-1 bg-slate-950 rounded-xl border border-slate-800">
+            {[
+              { id: 'glasses', icon: '🕶️', title: 'Cool Glasses' },
+              { id: 'crown', icon: '👑', title: 'Royal Crown' },
+              { id: 'horns', icon: '😈', title: 'Devil Horns' },
+              { id: 'party', icon: '🥳', title: 'Party Hat' },
+              { id: 'helmet', icon: '🪖', title: 'Viking Helmet' },
+              { id: 'none', icon: '❌', title: 'No Hat' },
+            ].map((h) => (
+              <button
+                key={h.id}
+                onClick={() => setHat(h.id as DummyHat)}
+                title={h.title}
+                className={`p-1.5 rounded-lg text-sm transition-all cursor-pointer ${
+                  hat === h.id ? 'bg-amber-500 text-slate-950 scale-110 shadow' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                {h.icon}
+              </button>
+            ))}
+          </div>
+
+          {/* Weapons picker */}
+          <div className="flex items-center gap-1.5 p-1 bg-slate-950 rounded-xl border border-slate-800">
+            {weapons.map((w) => (
+              <button
+                key={w.id}
+                onClick={() => setWeapon(w.id)}
+                title={w.name}
+                className={`p-2 rounded-lg text-lg transition-all cursor-pointer ${
+                  weapon === w.id
+                    ? 'bg-rose-600 text-white shadow scale-110'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-900'
+                }`}
+              >
+                {w.icon}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -174,6 +206,17 @@ export const SlapDummy: React.FC = () => {
             transform: `rotate(${wobbleOffset}deg)`,
           }}
         >
+          {/* Hat on Top */}
+          {hat !== 'none' && (
+            <div className="absolute -top-10 z-20 text-4xl filter drop-shadow animate-bounce">
+              {hat === 'crown' && '👑'}
+              {hat === 'horns' && '😈'}
+              {hat === 'glasses' && '🕶️'}
+              {hat === 'party' && '🥳'}
+              {hat === 'helmet' && '🪖'}
+            </div>
+          )}
+
           {/* Head */}
           <div className="relative w-36 h-36 rounded-full bg-gradient-to-br from-amber-200 via-amber-300 to-amber-400 border-4 border-amber-500 shadow-xl flex flex-col items-center justify-center p-2 z-10">
             {/* Eyes */}
