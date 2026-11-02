@@ -32,12 +32,12 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose }
             </div>
 
             <p className="text-slate-400">
-              Last updated: November 2026. At SmashChill (accessible from https://smashchill.vercel.app), your privacy is of paramount importance to us. This Privacy Policy document outlines the types of information collected and how it is used.
+              Last updated: November 2026. At SmashChill (accessible from https://smashchill.online), your privacy is of paramount importance to us. This Privacy Policy document outlines the types of information collected and how it is used.
             </p>
 
             <h4 className="text-sm font-bold text-white">1. Google AdSense & Third-Party Advertising</h4>
             <p className="text-slate-400">
-              Google is one of our third-party vendors. It uses cookies, including DoubleClick DART cookies, to serve ads to our site visitors based on their visit to smashchill.vercel.app and other sites on the internet. Users may choose to decline the use of DART cookies by visiting the Google Ad and Content Network Privacy Policy at{' '}
+              Google is one of our third-party vendors. It uses cookies, including DoubleClick DART cookies, to serve ads to our site visitors based on their visit to smashchill.online and other sites on the internet. Users may choose to decline the use of DART cookies by visiting the Google Ad and Content Network Privacy Policy at{' '}
               <a
                 href="https://policies.google.com/technologies/ads"
                 target="_blank"
@@ -64,7 +64,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose }
             </p>
 
             <div className="pt-2 text-[11px] text-slate-500">
-              If you have any questions regarding this policy, contact us at: support@smashchill.vercel.app
+              If you have any questions regarding this policy, contact us at: support@smashchill.online
             </div>
           </div>
         )}
@@ -78,7 +78,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose }
             </div>
 
             <p className="text-slate-400">
-              Welcome to SmashChill! By accessing or playing the games on smashchill.vercel.app, you agree to comply with and be bound by the following terms and conditions.
+              Welcome to SmashChill! By accessing or playing the games on smashchill.online, you agree to comply with and be bound by the following terms and conditions.
             </p>
 
             <h4 className="text-sm font-bold text-white">1. Free Entertainment Use</h4>
@@ -150,7 +150,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose }
               <div>
                 <label className="block text-[11px] font-bold text-slate-400 mb-1">Official Support Email</label>
                 <div className="text-sm font-mono text-amber-400 select-all">
-                  contact@smashchill.vercel.app
+                  contact@smashchill.online
                 </div>
               </div>
 

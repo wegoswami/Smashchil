@@ -29,9 +29,9 @@ export const SeoContentSection: React.FC = () => {
   ];
 
   const shareText = encodeURIComponent(
-    'I just smashed my stress on SmashChill! Whack annoying alarms, slice laptops like a ninja, and chill out here: https://smashchill.vercel.app'
+    'I just smashed my stress on SmashChill! Whack annoying alarms, slice laptops like a ninja, and chill out here: https://smashchill.online'
   );
-  const shareUrl = encodeURIComponent('https://smashchill.vercel.app');
+  const shareUrl = encodeURIComponent('https://smashchill.online');
 
   const handleShareTrigger = (platform: string) => {
     confetti({

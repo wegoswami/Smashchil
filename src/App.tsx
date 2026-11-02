@@ -353,7 +353,7 @@ export default function App() {
             <span aria-hidden="true" className="text-slate-700">·</span>
             <span>Global Anti-Stress & Venting Web Game</span>
             <span aria-hidden="true" className="text-slate-700">·</span>
-            <span className="text-emerald-400 font-medium">Domain: smashchill.vercel.app</span>
+            <span className="text-emerald-400 font-medium">Domain: smashchill.online</span>
           </div>
 
           {/* Quick links & Legal pages mandatory for AdSense approval */}

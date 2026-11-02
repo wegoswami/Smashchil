@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://smashchill.vercel.app/sitemap.xml
+Sitemap: https://smashchill.online/sitemap.xml
+Host: smashchill.online
