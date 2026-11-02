@@ -50,7 +50,7 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose }
 
             <h4 className="text-sm font-bold text-white">2. Google Analytics (GA4)</h4>
             <p className="text-slate-400">
-              We use Google Analytics (Tag ID: G-674WC6XKLK) to collect anonymous website traffic metrics such as browser type, time on page, and general country location. No personally identifiable information (PII) is sold, stored, or distributed.
+              We use Google Analytics (Tag ID: G-M32KPTKR7C) to collect anonymous website traffic metrics such as browser type, time on page, and general country location. No personally identifiable information (PII) is sold, stored, or distributed.
             </p>
 
             <h4 className="text-sm font-bold text-white">3. Local Storage</h4>
