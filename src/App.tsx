@@ -10,6 +10,7 @@ import { StatsModal } from './components/StatsModal';
 import { LeaderboardModal } from './components/LeaderboardModal';
 import { RewardedAdModal } from './components/RewardedAdModal';
 import { AdBanner } from './components/AdBanner';
+import { SeoContentSection } from './components/SeoContentSection';
 import { sound } from './utils/audio';
 
 export default function App() {
@@ -172,6 +173,9 @@ export default function App() {
           onRewardClick={() => setIsRewardedAdOpen(true)}
           className="mt-6"
         />
+
+        {/* On-Page SEO Content, Viral Share & Google FAQ Section */}
+        <SeoContentSection />
       </main>
 
       {/* Bottom Arcade Footer */}
