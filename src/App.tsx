@@ -16,6 +16,8 @@ import { CursorSparkles } from './components/CursorSparkles';
 import { FeverBar } from './components/FeverBar';
 import { AdBanner } from './components/AdBanner';
 import { SeoContentSection } from './components/SeoContentSection';
+import { LegalModals, LegalModalType } from './components/LegalModals';
+import { CookieBanner } from './components/CookieBanner';
 import { sound } from './utils/audio';
 
 const DEFAULT_WEAPONS: WeaponSkin[] = [
@@ -80,6 +82,7 @@ export default function App() {
   const [isRewardedAdOpen, setIsRewardedAdOpen] = useState<boolean>(false);
   const [isArmoryOpen, setIsArmoryOpen] = useState<boolean>(false);
   const [isQuestsOpen, setIsQuestsOpen] = useState<boolean>(false);
+  const [legalModal, setLegalModal] = useState<LegalModalType>(null);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [feverCharge, setFeverCharge] = useState<number>(35);
   const [isFeverActive, setIsFeverActive] = useState<boolean>(false);
@@ -343,31 +346,64 @@ export default function App() {
       </main>
 
       {/* Bottom Arcade Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/80 px-6 py-3.5 text-xs text-slate-500">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2.5 text-center sm:text-left">
-          <div className="flex items-center gap-2">
-            <span className="font-extrabold text-slate-300">⚡ SMASHCHILL PRO ARCADE</span>
-            <span aria-hidden="true">·</span>
-            <span>Worldwide Stress Relief & Ranking Games</span>
+      <footer className="border-t border-slate-900 bg-slate-950/90 px-6 py-4 text-xs text-slate-500">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
+            <span className="font-extrabold text-slate-200">⚡ SMASHCHILL PRO ARCADE</span>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <span>Global Anti-Stress & Venting Web Game</span>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <span className="text-emerald-400 font-medium">Domain: smashchill.vercel.app</span>
           </div>
 
-          <div className="flex items-center gap-3 text-slate-400">
+          {/* Quick links & Legal pages mandatory for AdSense approval */}
+          <div className="flex flex-wrap items-center justify-center gap-3 text-slate-400 font-medium">
             <button
               onClick={() => setIsArmoryOpen(true)}
-              className="text-amber-400 font-bold hover:underline cursor-pointer"
+              className="text-amber-400 hover:text-amber-300 hover:underline cursor-pointer transition-colors"
             >
               Armory
             </button>
-            <span aria-hidden="true">·</span>
+            <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setIsQuestsOpen(true)}
-              className="text-emerald-400 font-bold hover:underline cursor-pointer"
+              className="text-emerald-400 hover:text-emerald-300 hover:underline cursor-pointer transition-colors"
             >
               Daily Quests
             </button>
-            <span aria-hidden="true">·</span>
-            <span className="text-slate-300 font-mono font-bold">100% Vercel & AdSense Ready</span>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <button
+              onClick={() => setLegalModal('privacy')}
+              className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
+            >
+              Privacy Policy
+            </button>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <button
+              onClick={() => setLegalModal('terms')}
+              className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
+            >
+              Terms of Service
+            </button>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <button
+              onClick={() => setLegalModal('about')}
+              className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
+            >
+              About Us
+            </button>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <button
+              onClick={() => setLegalModal('contact')}
+              className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
+            >
+              Contact Us
+            </button>
           </div>
+        </div>
+        <div className="max-w-5xl mx-auto mt-2 pt-2 border-t border-slate-900/60 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500">
+          <span>&copy; {new Date().getFullYear()} SmashChill. All rights reserved. Free online stress relief platform.</span>
+          <span className="font-mono text-emerald-400/80">AdSense Publisher ID: pub-7658190454263901</span>
         </div>
       </footer>
 
@@ -413,6 +449,12 @@ export default function App() {
         lang="hi"
         sessionStats={sessionStats}
       />
+
+      {/* Cookie Consent Banner */}
+      <CookieBanner onOpenPrivacy={() => setLegalModal('privacy')} />
+
+      {/* Legal Modals (Privacy, Terms, About, Contact) */}
+      <LegalModals activeModal={legalModal} onClose={() => setLegalModal(null)} />
     </div>
   );
 }
