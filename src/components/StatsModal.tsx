@@ -38,8 +38,8 @@ export const StatsModal: React.FC<StatsModalProps> = ({
 
   const handleShare = async () => {
     const shareData = {
-      title: 'Catharsis — Smash Stress & Find Calm',
-      text: 'Whenever you feel stressed, angry, or overwhelmed, smash things and find deep zen here.',
+      title: 'SmashChill — Smash Stress & Find Calm | Free Online Arcade',
+      text: 'Whenever you feel stressed, angry, or overwhelmed, smash things and find deep calm on SmashChill.',
       url: window.location.href,
     };
 
@@ -150,12 +150,12 @@ export const StatsModal: React.FC<StatsModalProps> = ({
           </div>
         </div>
 
-        {/* Vercel Ready Callout & Share */}
+        {/* Platform info & Share */}
         <div className="pt-2 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="text-xs text-slate-400 text-center sm:text-left">
-            <span>Ready for </span>
-            <span className="font-semibold text-white">Vercel Deployment</span>
-            <span> · Zero server dependencies</span>
+            <span>Powered by </span>
+            <span className="font-semibold text-white">SmashChill Arcade</span>
+            <span> · 100% Free Client-Side Engine</span>
           </div>
 
           <button

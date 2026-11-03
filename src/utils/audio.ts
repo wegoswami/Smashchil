@@ -24,14 +24,17 @@ class SoundEngine {
 
   private initCtx() {
     if (!this.ctx) {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      if (!AudioCtx) return;
       this.ctx = new AudioCtx();
       this.masterGain = this.ctx.createGain();
       this.masterGain.gain.setValueAtTime(this.isMuted ? 0 : 0.8, this.ctx.currentTime);
       this.masterGain.connect(this.ctx.destination);
     }
-    if (this.ctx.state === 'suspended') {
-      this.ctx.resume();
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume().catch(() => {});
     }
   }
 
@@ -453,6 +456,83 @@ class SoundEngine {
     this.vibrate(20);
   }
 
+  // --- HYDRAULIC PRESS SOUNDS ---
+  public playHydraulicHum() {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx || !this.masterGain) return;
+
+    const t = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(80, t);
+    osc.frequency.linearRampToValueAtTime(110, t + 0.25);
+
+    gain.gain.setValueAtTime(0.001, t);
+    gain.gain.linearRampToValueAtTime(0.25, t + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + 0.26);
+  }
+
+  public playHydraulicCrush() {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx || !this.masterGain) return;
+
+    const t = this.ctx.currentTime;
+    // Heavy sub bass thud
+    const subOsc = this.ctx.createOscillator();
+    const subGain = this.ctx.createGain();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(120, t);
+    subOsc.frequency.exponentialRampToValueAtTime(28, t + 0.45);
+    subGain.gain.setValueAtTime(0.9, t);
+    subGain.gain.exponentialRampToValueAtTime(0.001, t + 0.45);
+
+    subOsc.connect(subGain);
+    subGain.connect(this.masterGain);
+    subOsc.start(t);
+    subOsc.stop(t + 0.46);
+
+    // Crunch metal/debris burst
+    this.playNoiseBurst(0.35, 1400, 0.7);
+    this.vibrate([60, 30, 80]);
+  }
+
+  // --- 3D POP-IT FIDGET SOUND ---
+  public playPopIt(row: number = 0) {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx || !this.masterGain) return;
+
+    const t = this.ctx.currentTime;
+    // Pleasant musical pitch scale per row
+    const rowPitches = [330, 370, 415, 466, 523, 587, 660, 740];
+    const baseFreq = rowPitches[Math.abs(row) % rowPitches.length] || 440;
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(baseFreq * 0.7, t);
+    osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.6, t + 0.015);
+    osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.9, t + 0.045);
+
+    gain.gain.setValueAtTime(0.7, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.055);
+
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + 0.06);
+
+    this.vibrate(12);
+  }
+
   public playFanfare() {
     if (this.isMuted) return;
     this.initCtx();
@@ -475,6 +555,134 @@ class SoundEngine {
       osc.start(t + idx * 0.09);
       osc.stop(t + idx * 0.09 + 0.38);
     });
+  }
+
+  // --- ADVANCED GAME SOUNDS ---
+  public playSpinTick() {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx || !this.masterGain) return;
+
+    const t = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(800 + Math.random() * 200, t);
+    osc.frequency.exponentialRampToValueAtTime(300, t + 0.03);
+    gain.gain.setValueAtTime(0.3, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.035);
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + 0.04);
+  }
+
+  public playSandCrunch() {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx || !this.masterGain) return;
+
+    const t = this.ctx.currentTime;
+    // Layer 1: Grainy friction
+    this.playNoiseBurst(0.12, 2200, 0.45);
+
+    // Layer 2: Soft tactile squish
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(280, t);
+    osc.frequency.exponentialRampToValueAtTime(140, t + 0.1);
+    gain.gain.setValueAtTime(0.35, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + 0.11);
+    this.vibrate(15);
+  }
+
+  public playNewtonClick(intensity = 1) {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx || !this.masterGain) return;
+
+    const t = this.ctx.currentTime;
+    // Hard steel sphere strike
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(2400, t);
+    osc.frequency.exponentialRampToValueAtTime(1800, t + 0.04);
+
+    gain.gain.setValueAtTime(Math.min(0.8, 0.5 * intensity), t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + 0.065);
+
+    // High harmonic metallic resonance
+    const ping = this.ctx.createOscillator();
+    const pingGain = this.ctx.createGain();
+    ping.type = 'sine';
+    ping.frequency.setValueAtTime(4800, t);
+    pingGain.gain.setValueAtTime(0.18 * intensity, t);
+    pingGain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+    ping.connect(pingGain);
+    pingGain.connect(this.masterGain);
+    ping.start(t);
+    ping.stop(t + 0.13);
+
+    this.vibrate(Math.round(18 * intensity));
+  }
+
+  public playPvpHit() {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx || !this.masterGain) return;
+
+    const t = this.ctx.currentTime;
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(260, t);
+    osc.frequency.exponentialRampToValueAtTime(60, t + 0.22);
+    gain.gain.setValueAtTime(0.8, t);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + 0.22);
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+    osc.start(t);
+    osc.stop(t + 0.23);
+
+    this.playNoiseBurst(0.14, 1200, 0.5);
+    this.vibrate([25, 20, 35]);
+  }
+
+  public playPetGiggle() {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx || !this.masterGain) return;
+
+    const t = this.ctx.currentTime;
+    const freqs = [587.33, 739.99, 880.0]; // D5, F#5, A5
+    freqs.forEach((f, i) => {
+      if (!this.ctx || !this.masterGain) return;
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(f, t + i * 0.06);
+      osc.frequency.linearRampToValueAtTime(f * 1.15, t + i * 0.06 + 0.05);
+
+      gain.gain.setValueAtTime(0.3, t + i * 0.06);
+      gain.gain.exponentialRampToValueAtTime(0.001, t + i * 0.06 + 0.12);
+
+      osc.connect(gain);
+      gain.connect(this.masterGain);
+      osc.start(t + i * 0.06);
+      osc.stop(t + i * 0.06 + 0.13);
+    });
+    this.vibrate(15);
   }
 
   // --- LO-FI ARCADE BGM SYNTHESIZER ---
@@ -571,15 +779,16 @@ class SoundEngine {
     this.initCtx();
     if (!this.ctx || !this.masterGain) return;
 
-    if (!enable) {
-      if (this.rainNode) {
-        try {
-          (this.rainNode as unknown as { stop: () => void }).stop();
-        } catch {
-          // ignore
-        }
-        this.rainNode = null;
+    if (this.rainNode) {
+      try {
+        (this.rainNode as unknown as { stop: () => void }).stop();
+      } catch {
+        // ignore
       }
+      this.rainNode = null;
+    }
+
+    if (!enable) {
       return;
     }
 

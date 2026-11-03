@@ -28,8 +28,13 @@ export const SlapDummy: React.FC<SlapDummyProps> = ({ onSlapHit }) => {
   const [faceExpression, setFaceExpression] = useState<'normal' | 'hit' | 'dizzy' | 'ko'>('normal');
   const [particles, setParticles] = useState<SlapParticle[]>([]);
 
-  const animTimerRef = useRef<number | null>(null);
   const resetExpressionTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (resetExpressionTimerRef.current) clearTimeout(resetExpressionTimerRef.current);
+    };
+  }, []);
 
   const weapons: { id: SlapWeapon; name: string; icon: string; sound: () => void }[] = [
     { id: 'hand', name: 'Open Slap', icon: '🖐️', sound: () => sound.playSmash('slap') },
@@ -50,6 +55,7 @@ export const SlapDummy: React.FC<SlapDummyProps> = ({ onSlapHit }) => {
 
     setSlapCount((c) => c + 1);
     setCombo((c) => c + 1);
+    onSlapHit?.();
 
     // Bouncy spring wobble
     const direction = hitX > rect.width / 2 ? -28 : 28;

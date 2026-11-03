@@ -346,6 +346,8 @@ export const StressNinja: React.FC<StressNinjaProps> = ({ onWatchAd }) => {
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
+          onPointerLeave={handlePointerUp}
+          onPointerCancel={handlePointerUp}
           className="w-full h-full cursor-crosshair touch-none"
         />
 

@@ -1,11 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Header, GameMode } from './components/Header';
 import { WhackAStress } from './components/WhackAStress';
+import { HydraulicPress } from './components/HydraulicPress';
+import { PopItFidget } from './components/PopItFidget';
 import { StressNinja } from './components/StressNinja';
+import { SoapCarver } from './components/SoapCarver';
 import { SlapDummy } from './components/SlapDummy';
 import { RageRoom } from './components/RageRoom';
 import { BubblePop } from './components/BubblePop';
 import { ZenPond } from './components/ZenPond';
+import { RantShredder } from './components/RantShredder';
+import { SmashDuelPvp } from './components/SmashDuelPvp';
+import { KineticSand } from './components/KineticSand';
+import { NewtonCradle } from './components/NewtonCradle';
+import { LuckyWheelModal } from './components/LuckyWheelModal';
+import { ZenPetMascot } from './components/ZenPetMascot';
 import { StatsModal } from './components/StatsModal';
 import { LeaderboardModal } from './components/LeaderboardModal';
 import { RewardedAdModal } from './components/RewardedAdModal';
@@ -82,10 +91,13 @@ export default function App() {
   const [isRewardedAdOpen, setIsRewardedAdOpen] = useState<boolean>(false);
   const [isArmoryOpen, setIsArmoryOpen] = useState<boolean>(false);
   const [isQuestsOpen, setIsQuestsOpen] = useState<boolean>(false);
+  const [isWheelOpen, setIsWheelOpen] = useState<boolean>(false);
   const [legalModal, setLegalModal] = useState<LegalModalType>(null);
   const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
   const [feverCharge, setFeverCharge] = useState<number>(35);
   const [isFeverActive, setIsFeverActive] = useState<boolean>(false);
+
+  const feverTimerRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const boostFever = (amount = 12) => {
     setFeverCharge((prev) => Math.min(100, prev + amount));
@@ -93,11 +105,18 @@ export default function App() {
 
   const activateFever = () => {
     setIsFeverActive(true);
-    setTimeout(() => {
+    if (feverTimerRef.current) clearTimeout(feverTimerRef.current);
+    feverTimerRef.current = setTimeout(() => {
       setIsFeverActive(false);
       setFeverCharge(0);
     }, 10000);
   };
+
+  useEffect(() => {
+    return () => {
+      if (feverTimerRef.current) clearTimeout(feverTimerRef.current);
+    };
+  }, []);
 
   // Pro Coin Wallet System
   const [coins, setCoins] = useState<number>(() => {
@@ -181,20 +200,86 @@ export default function App() {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
 
-  const games: { id: GameMode; title: string; subtitle: string; icon: string; bg: string }[] = [
+  const [gameFilter, setGameFilter] = useState<'all' | 'smash' | 'chill'>('all');
+
+  const games: {
+    id: GameMode;
+    title: string;
+    subtitle: string;
+    icon: string;
+    bg: string;
+    category: 'smash' | 'chill';
+    badge?: string;
+  }[] = [
     {
       id: 'whack',
       title: 'Whack-A-Stress',
       subtitle: 'Hammer alarms & toxic emails!',
       icon: '🔨',
       bg: 'from-amber-500/20 to-rose-500/20 border-amber-500/50',
+      category: 'smash',
+    },
+    {
+      id: 'pvp',
+      title: '1v1 Smash Duel',
+      subtitle: 'Play with friends or online!',
+      icon: '⚔️',
+      bg: 'from-rose-600/30 via-purple-600/20 to-sky-600/30 border-rose-500/60',
+      category: 'smash',
+      badge: 'MULTIPLAYER',
+    },
+    {
+      id: 'press',
+      title: 'Hydraulic Press',
+      subtitle: 'Squash alarms & cans at 10,000 PSI!',
+      icon: '🚜',
+      bg: 'from-red-500/20 to-amber-500/20 border-red-500/50',
+      category: 'smash',
+      badge: 'VIRAL',
+    },
+    {
+      id: 'popit',
+      title: 'Pop-It 3D Fidget',
+      subtitle: 'Rainbow silicone bubbles with flip board!',
+      icon: '🌈',
+      bg: 'from-pink-500/20 to-purple-500/20 border-pink-500/50',
+      category: 'chill',
+      badge: 'TRENDING',
+    },
+    {
+      id: 'sand',
+      title: 'Kinetic Sand ASMR',
+      subtitle: 'Slice crunchy rainbow layered sand!',
+      icon: '🏖️',
+      bg: 'from-teal-500/20 to-emerald-500/20 border-teal-500/50',
+      category: 'chill',
+      badge: 'NEW',
+    },
+    {
+      id: 'newton',
+      title: "Newton's Cradle",
+      subtitle: 'Chrome sphere momentum collisions!',
+      icon: '⚖️',
+      bg: 'from-indigo-500/20 to-slate-500/20 border-indigo-500/50',
+      category: 'chill',
+      badge: 'PHYSICS',
     },
     {
       id: 'ninja',
       title: 'Stress Ninja',
       subtitle: 'Swipe & slice flying laptops!',
-      icon: '⚔️',
+      icon: '🥷',
       bg: 'from-sky-500/20 to-indigo-500/20 border-sky-500/50',
+      category: 'smash',
+    },
+    {
+      id: 'soap',
+      title: 'Soap Slicer ASMR',
+      subtitle: 'Slice crisp textured kinetic cubes!',
+      icon: '🧼',
+      bg: 'from-teal-500/20 to-emerald-500/20 border-teal-500/50',
+      category: 'chill',
+      badge: 'ASMR',
     },
     {
       id: 'slap',
@@ -202,6 +287,7 @@ export default function App() {
       subtitle: 'Wobble ragdoll & open slap!',
       icon: '🥊',
       bg: 'from-rose-500/20 to-pink-500/20 border-rose-500/50',
+      category: 'smash',
     },
     {
       id: 'smash',
@@ -209,6 +295,7 @@ export default function App() {
       subtitle: 'Sledgehammer PC destruction!',
       icon: '💥',
       bg: 'from-purple-500/20 to-red-500/20 border-purple-500/50',
+      category: 'smash',
     },
     {
       id: 'bubble',
@@ -216,6 +303,7 @@ export default function App() {
       subtitle: 'Endless sensory popping!',
       icon: '🫧',
       bg: 'from-cyan-500/20 to-blue-500/20 border-cyan-500/50',
+      category: 'chill',
     },
     {
       id: 'zen',
@@ -223,8 +311,21 @@ export default function App() {
       subtitle: 'Feed fish & bloom lotus buds!',
       icon: '🌸',
       bg: 'from-emerald-500/20 to-teal-500/20 border-emerald-500/50',
+      category: 'chill',
+    },
+    {
+      id: 'shredder',
+      title: 'Rant Shredder',
+      subtitle: 'Vent thoughts, shred & rocket launch!',
+      icon: '📄',
+      bg: 'from-orange-500/20 to-red-500/20 border-orange-500/50',
+      category: 'smash',
+      badge: 'THERAPY',
     },
   ];
+
+  const visibleGames =
+    gameFilter === 'all' ? games : games.filter((g) => g.category === gameFilter);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-rose-500 selection:text-white">
@@ -242,6 +343,7 @@ export default function App() {
         coins={coins}
         onOpenArmory={() => setIsArmoryOpen(true)}
         onOpenQuests={() => setIsQuestsOpen(true)}
+        onOpenWheel={() => setIsWheelOpen(true)}
         onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
         onOpenStats={() => setIsStatsOpen(true)}
         isFullscreen={isFullscreen}
@@ -258,9 +360,60 @@ export default function App() {
           onActivateFever={activateFever}
         />
 
+        {/* Category Filter Navigation */}
+        <div className="w-full max-w-4xl flex items-center justify-between gap-2 mb-3 px-1">
+          <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-2xl border border-slate-800 text-xs font-bold">
+            <button
+              onClick={() => {
+                setGameFilter('all');
+                sound.playBonk();
+              }}
+              className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                gameFilter === 'all'
+                  ? 'bg-rose-600 text-white shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              🎮 All ({games.length})
+            </button>
+            <button
+              onClick={() => {
+                setGameFilter('smash');
+                sound.playBonk();
+              }}
+              className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                gameFilter === 'smash'
+                  ? 'bg-amber-500 text-slate-950 font-black shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              💥 Smash ({games.filter((g) => g.category === 'smash').length})
+            </button>
+            <button
+              onClick={() => {
+                setGameFilter('chill');
+                sound.playBonk();
+              }}
+              className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                gameFilter === 'chill'
+                  ? 'bg-teal-500 text-slate-950 font-black shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              🌸 Chill ({games.filter((g) => g.category === 'chill').length})
+            </button>
+          </div>
+
+          <div className="hidden sm:flex items-center gap-1 text-[11px] font-bold text-slate-400">
+            <span>Instant Play</span>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <span className="text-amber-400">100% Free</span>
+          </div>
+        </div>
+
         {/* Game Selection Cards Strip */}
-        <div className="w-full max-w-4xl grid grid-cols-3 sm:grid-cols-6 gap-2 mb-4">
-          {games.map((g) => {
+        <div className="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-5">
+          {visibleGames.map((g) => {
             const isCurrent = activeMode === g.id;
             return (
               <button
@@ -269,15 +422,24 @@ export default function App() {
                   setActiveMode(g.id);
                   sound.playBonk();
                 }}
-                className={`flex flex-col items-center justify-center p-2.5 rounded-2xl border-2 transition-all cursor-pointer ${
+                className={`relative flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all cursor-pointer ${
                   isCurrent
-                    ? `bg-gradient-to-b ${g.bg} scale-105 shadow-lg border-white text-white`
-                    : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                    ? `bg-gradient-to-b ${g.bg} scale-102 shadow-xl border-white text-white`
+                    : 'bg-slate-900/80 border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 hover:scale-101'
                 }`}
               >
-                <span className="text-2xl sm:text-3xl filter drop-shadow">{g.icon}</span>
-                <span className="text-[11px] font-black mt-1 text-center truncate w-full">
+                {/* Badge if present */}
+                {g.badge && (
+                  <span className="absolute -top-1.5 -right-1 px-1.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-rose-500 text-white shadow-sm ring-2 ring-slate-950">
+                    {g.badge}
+                  </span>
+                )}
+                <span className="text-3xl filter drop-shadow">{g.icon}</span>
+                <span className="text-xs font-black mt-1 text-center truncate w-full">
                   {g.title}
+                </span>
+                <span className="text-[10px] text-slate-400 text-center truncate w-full mt-0.5 opacity-80">
+                  {g.subtitle}
                 </span>
               </button>
             );
@@ -287,14 +449,69 @@ export default function App() {
         {/* Active Game Stage */}
         <div className="w-full flex justify-center">
           {activeMode === 'whack' && (
-            <WhackAStress
+            <WhackAStress onWatchAd={() => setIsRewardedAdOpen(true)} />
+          )}
+
+          {activeMode === 'pvp' && (
+            <SmashDuelPvp
+              onDuelWin={(reward) => {
+                boostFever(35);
+                setCoins((c) => c + reward);
+                setSessionStats((s) => ({ ...s, itemsSmashed: s.itemsSmashed + 15 }));
+              }}
+            />
+          )}
+
+          {activeMode === 'sand' && (
+            <KineticSand
+              onSandSliced={() => {
+                boostFever(3);
+                setCoins((c) => c + 2);
+              }}
+            />
+          )}
+
+          {activeMode === 'newton' && (
+            <NewtonCradle
+              onBallHit={() => {
+                boostFever(1);
+                setCoins((c) => c + 1);
+              }}
+            />
+          )}
+
+          {activeMode === 'press' && (
+            <HydraulicPress
+              onItemCrushed={() => {
+                boostFever(22);
+                setCoins((c) => c + 30);
+                setSessionStats((s) => ({ ...s, itemsSmashed: s.itemsSmashed + 1 }));
+              }}
               onWatchAd={() => setIsRewardedAdOpen(true)}
             />
           )}
 
+          {activeMode === 'popit' && (
+            <PopItFidget
+              onPop={() => {
+                boostFever(2);
+                setCoins((c) => c + 1);
+                setSessionStats((s) => ({ ...s, bubblesPopped: s.bubblesPopped + 1 }));
+              }}
+            />
+          )}
+
           {activeMode === 'ninja' && (
-            <StressNinja
-              onWatchAd={() => setIsRewardedAdOpen(true)}
+            <StressNinja onWatchAd={() => setIsRewardedAdOpen(true)} />
+          )}
+
+          {activeMode === 'soap' && (
+            <SoapCarver
+              lang="hi"
+              onCubeCut={() => {
+                boostFever(3);
+                setCoins((c) => c + 2);
+              }}
             />
           )}
 
@@ -330,6 +547,17 @@ export default function App() {
           )}
 
           {activeMode === 'zen' && <ZenPond />}
+
+          {activeMode === 'shredder' && (
+            <RantShredder
+              lang="hi"
+              onRantDestroyed={() => {
+                boostFever(30);
+                setCoins((c) => c + 50);
+                setSessionStats((s) => ({ ...s, rantsDestroyed: s.rantsDestroyed + 1 }));
+              }}
+            />
+          )}
         </div>
 
         {/* Pro Instant ASMR Soundboard */}
@@ -423,11 +651,16 @@ export default function App() {
           </div>
         </div>
         <div className="max-w-5xl mx-auto mt-3 pt-3 border-t border-slate-900/60 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2">
-          <span>&copy; {new Date().getFullYear()} SmashChill Arcade. All rights reserved. Stress-relief digital sandbox.</span>
+          <span>&copy; {new Date().getFullYear()} SmashChill Arcade. All rights reserved. Therapeutic stress-relief digital games.</span>
           <div className="flex items-center gap-3">
-            <span className="font-mono text-emerald-400/90">Publisher: pub-7658190454263901</span>
+            <span className="text-slate-400">SmashChill Interactive Studio</span>
             <span aria-hidden="true" className="text-slate-700">·</span>
-            <span className="font-mono text-slate-400">wegoswami@gmail.com</span>
+            <button
+              onClick={() => setLegalModal('contact')}
+              className="text-amber-400/90 hover:underline cursor-pointer"
+            >
+              Contact Support
+            </button>
           </div>
         </div>
       </footer>
@@ -477,6 +710,20 @@ export default function App() {
 
       {/* Cookie Consent Banner */}
       <CookieBanner onOpenPrivacy={() => setLegalModal('privacy')} />
+
+      {/* Lucky Zen Spin Wheel Modal */}
+      <LuckyWheelModal
+        isOpen={isWheelOpen}
+        onClose={() => setIsWheelOpen(false)}
+        coins={coins}
+        setCoins={setCoins}
+        onActivateFeverBonus={activateFever}
+      />
+
+      {/* Interactive Desk Companion Mascot */}
+      <ZenPetMascot
+        totalSmashed={sessionStats.itemsSmashed + sessionStats.rantsDestroyed + sessionStats.bubblesPopped}
+      />
 
       {/* Legal Modals (Privacy, Terms, About, Contact, Disclaimer, DMCA) */}
       <LegalModals

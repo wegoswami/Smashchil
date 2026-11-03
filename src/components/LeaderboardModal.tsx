@@ -36,7 +36,9 @@ export const LeaderboardModal: React.FC<LeaderboardModalProps> = ({
 }) => {
   const [filter, setFilter] = useState<'all' | 'whack' | 'ninja' | 'slap'>('all');
   const [entries, setEntries] = useState<LeaderboardEntry[]>(() => {
-    const saved = localStorage.getItem('catharsis_global_leaderboard');
+    const saved =
+      localStorage.getItem('smashchill_global_leaderboard') ||
+      localStorage.getItem('catharsis_global_leaderboard');
     return saved ? JSON.parse(saved) : DEFAULT_SCORES;
   });
 
@@ -65,7 +67,7 @@ export const LeaderboardModal: React.FC<LeaderboardModalProps> = ({
 
     const updated = [newEntry, ...entries].sort((a, b) => b.score - a.score);
     setEntries(updated);
-    localStorage.setItem('catharsis_global_leaderboard', JSON.stringify(updated));
+    localStorage.setItem('smashchill_global_leaderboard', JSON.stringify(updated));
     setHasSubmitted(true);
     sound.playFanfare();
 

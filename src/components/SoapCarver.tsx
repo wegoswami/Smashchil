@@ -6,13 +6,14 @@ import confetti from 'canvas-confetti';
 
 interface SoapCarverProps {
   lang: Language;
+  onCubeCut?: () => void;
 }
 
 const ROWS = 8;
 const COLS = 12;
 const TOTAL_BLOCKS = ROWS * COLS;
 
-export const SoapCarver: React.FC<SoapCarverProps> = ({ lang }) => {
+export const SoapCarver: React.FC<SoapCarverProps> = ({ lang, onCubeCut }) => {
   const t = translations[lang];
 
   const [cutCubes, setCutCubes] = useState<boolean[]>(() => Array(TOTAL_BLOCKS).fill(false));
@@ -46,6 +47,7 @@ export const SoapCarver: React.FC<SoapCarverProps> = ({ lang }) => {
     if (cutCubes[index]) return;
 
     sound.playSoapSlice();
+    onCubeCut?.();
     setCutCubes((prev) => {
       const next = [...prev];
       next[index] = true;
@@ -77,6 +79,18 @@ export const SoapCarver: React.FC<SoapCarverProps> = ({ lang }) => {
   const handlePointerUp = () => {
     isSlicingRef.current = false;
   };
+
+  React.useEffect(() => {
+    const onUp = () => {
+      isSlicingRef.current = false;
+    };
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointercancel', onUp);
+    return () => {
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointercancel', onUp);
+    };
+  }, []);
 
   const handleReset = () => {
     setCutCubes(Array(TOTAL_BLOCKS).fill(false));

@@ -323,22 +323,34 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose, 
                   <span>About SmashChill — The Digital Stress Relief Sanctuary</span>
                 </div>
                 <p className="text-slate-300">
-                  <strong>SmashChill</strong> was engineered to solve a modern crisis: ubiquitous screen fatigue, workplace micro-stressors, and cognitive burnout.
+                  <strong>SmashChill</strong> (https://smashchill.online) was engineered to solve a modern digital epidemic: ubiquitous screen fatigue, endless notification anxiety, and cognitive burnout among professionals, students, and casual gamers.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 via-slate-950 to-slate-950 border border-amber-500/30 space-y-2">
+                <h4 className="text-sm font-black text-amber-300 flex items-center gap-2">
+                  <span>✨ Why Human-Curated Web Games Outperform AI Clutter</span>
+                </h4>
+                <p className="text-xs text-slate-300 leading-relaxed">
+                  The modern web has become flooded with generic, automated, cookie-cutter clone games and clickbait portals that prioritize ad impressions over human delight. SmashChill was built on an opposite, craftsman principle: <em>every mechanic, haptic pulse, sound synthesis envelope, and ragdoll spring is hand-calibrated by real web game designers</em>. 
+                </p>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  We believe true stress relief requires authentic sensory feedback—from the crisp acoustic pop of realistic virtual bubble wrap to the harmonious ripple frequencies of Japanese koi ponds. Generic AI-generated games cannot calibrate the delicate balance between physical catharsis (discharging tension) and sensory soothing (parasympathetic calming). That thoughtful human curation is what makes SmashChill an authentic sanctuary.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
                   <div className="text-xl">🔨</div>
-                  <h5 className="font-bold text-white">Phase 1: Cathartic Venting</h5>
+                  <h5 className="font-bold text-white">Phase 1: Cathartic Venting (Smash)</h5>
                   <p className="text-[11px] text-slate-400">
-                    When tension accumulates, our sympathetic nervous system triggers the fight-or-flight response. SmashChill provides a zero-harm digital punching bag (Whack-A-Stress, Stress Ninja, Rage Room) to discharge acute kinetic frustration.
+                    When daily frustration builds up, the sympathetic nervous system triggers high-alert tension. SmashChill provides a zero-harm digital punching bag (Whack-A-Stress, Stress Ninja, Virtual Rage Room) to discharge acute kinetic tension safely.
                   </p>
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
                   <div className="text-xl">🌸</div>
-                  <h5 className="font-bold text-white">Phase 2: Parasympathetic Restoration</h5>
+                  <h5 className="font-bold text-white">Phase 2: Sensory Restoration (Chill)</h5>
                   <p className="text-[11px] text-slate-400">
                     Following catharsis, deep calming is essential. The Zen Koi Pond and ASMR Soundboard use pentatonic bell chimes, water ripples, and soothing hues to stimulate the vagus nerve and return heart-rate variability (HRV) to baseline.
                   </p>
@@ -346,19 +358,23 @@ export const LegalModals: React.FC<LegalModalsProps> = ({ activeModal, onClose, 
               </div>
 
               <div className="space-y-2">
-                <h4 className="text-sm font-bold text-white">Our Engineering Philosophy</h4>
+                <h4 className="text-sm font-bold text-white">Our Core Commitments</h4>
                 <ul className="list-disc pl-5 space-y-1 text-slate-400 text-[11px]">
-                  <li><strong>Zero Bloat:</strong> Built with ultra-lightweight Canvas physics and Web Audio API synthesis—no massive 50MB video downloads.</li>
-                  <li><strong>Universal Access:</strong> 100% free with no paywalls or required accounts. Fully responsive across phones, tablets, Chromebooks, and workstations.</li>
-                  <li><strong>Privacy First:</strong> Your scores and settings remain on your device in LocalStorage.</li>
+                  <li><strong>Zero Friction:</strong> 100% free with no forced paywalls, mandatory account sign-ups, or invasive permissions. Instant play on any device.</li>
+                  <li><strong>Lightweight Performance:</strong> Engineered with optimized HTML5 Canvas and the Web Audio API—sub-second load times even on slow mobile networks.</li>
+                  <li><strong>Responsible Monetization:</strong> We partner exclusively with verified high-standard advertising networks (Google AdSense, Publisher ID: <span className="font-mono text-emerald-400">pub-7658190454263901</span>) that respect player privacy and maintain strict ad safety standards.</li>
+                  <li><strong>Privacy by Architecture:</strong> Your progress, high scores, and audio toggles live on your browser LocalStorage and never leave your machine.</li>
                 </ul>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+              <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-slate-400 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                 <div>
-                  <span className="font-bold text-white">Created & Maintained by:</span> SmashChill Team
+                  <span className="font-bold text-white">Founder & Lead Maintainer:</span> SmashChill Independent Studio
                 </div>
-                <div className="font-mono text-amber-400">wegoswami@gmail.com</div>
+                <div className="flex items-center gap-2">
+                  <span className="text-slate-500">Official Contact:</span>
+                  <a href="mailto:wegoswami@gmail.com" className="font-mono text-amber-400 underline">wegoswami@gmail.com</a>
+                </div>
               </div>
             </div>
           )}

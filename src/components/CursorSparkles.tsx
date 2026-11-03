@@ -21,11 +21,18 @@ export const CursorSparkles: React.FC<CursorSparklesProps> = ({ activeMode }) =>
 
   const colorsByMode: Record<string, string[]> = {
     whack: ['#fbbf24', '#f59e0b', '#f43f5e', '#ffffff'],
+    pvp: ['#f43f5e', '#38bdf8', '#fbbf24', '#ffffff'],
+    press: ['#f59e0b', '#ef4444', '#f43f5e', '#ffffff', '#fbbf24'],
+    popit: ['#f43f5e', '#f59e0b', '#10b981', '#0ea5e9', '#a855f7'],
+    sand: ['#2dd4bf', '#fbbf24', '#38bdf8', '#c084fc', '#ffffff'],
+    newton: ['#cbd5e1', '#94a3b8', '#38bdf8', '#ffffff'],
     ninja: ['#38bdf8', '#818cf8', '#a855f7', '#ffffff'],
+    soap: ['#2dd4bf', '#14b8a6', '#5eead4', '#ffffff'],
     slap: ['#f43f5e', '#fb7185', '#fda4af', '#ffffff'],
     smash: ['#c084fc', '#f43f5e', '#f59e0b', '#ffffff'],
     bubble: ['#38bdf8', '#06b6d4', '#67e8f9', '#ffffff'],
     zen: ['#34d399', '#10b981', '#6ee7b7', '#fde047'],
+    shredder: ['#f97316', '#ef4444', '#fbbf24', '#ffffff'],
   };
 
   useEffect(() => {

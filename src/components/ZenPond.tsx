@@ -87,6 +87,10 @@ export const ZenPond: React.FC = () => {
         happiness: 0,
       },
     ];
+
+    return () => {
+      sound.toggleRain(false);
+    };
   }, []);
 
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {

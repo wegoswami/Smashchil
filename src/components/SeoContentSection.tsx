@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import {
   ChevronDown,
-  Share2,
-  HelpCircle,
-  Sparkles,
-  Heart,
-  Trophy,
-  Zap,
   BookOpen,
   Brain,
   Timer,
-  Volume2,
   Gamepad2,
-  CheckCircle2,
   ArrowRight,
   ShieldCheck,
   Flame,
+  Waves,
+  Eye,
+  Activity,
+  Headphones,
+  Compass,
+  Mail,
+  Send,
+  CheckCircle,
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { GameMode } from './Header';
@@ -25,9 +25,29 @@ interface SeoContentSectionProps {
   onOpenLegal?: (tab: 'privacy' | 'terms' | 'about' | 'contact' | 'disclaimer') => void;
 }
 
+export type EditorialTab = 'guides' | 'science' | 'doomscroll' | 'ergonomics' | 'asmr' | 'protocol';
+
 export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGame, onOpenLegal }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [activeArticleTab, setActiveArticleTab] = useState<'guides' | 'science' | 'ergonomics'>('guides');
+  const [activeArticleTab, setActiveArticleTab] = useState<EditorialTab>('guides');
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(() => {
+    return localStorage.getItem('smashchill_newsletter_subscribed') === 'true';
+  });
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail || !newsletterEmail.includes('@')) return;
+    localStorage.setItem('smashchill_newsletter_subscribed', 'true');
+    setNewsletterSubscribed(true);
+    setNewsletterEmail('');
+    confetti({
+      particleCount: 40,
+      spread: 60,
+      origin: { y: 0.8 },
+      colors: ['#10b981', '#fbbf24', '#38bdf8'],
+    });
+  };
 
   const faqs = [
     {
@@ -60,7 +80,7 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
     },
     {
       q: 'How can I contact the creators of SmashChill?',
-      a: 'You can reach our team anytime via email at wegoswami@gmail.com or contact@smashchill.online, or by clicking the "Contact Us" tab in our footer compliance desk.',
+      a: 'You can reach our team anytime via email at wegoswami@gmail.com, or by clicking the "Contact Us" tab in our footer compliance desk.',
     },
   ];
 
@@ -91,7 +111,17 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
     }
 
     if (target) {
-      window.open(target, '_blank', 'noopener,noreferrer');
+      try {
+        const link = document.createElement('a');
+        link.href = target;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch {
+        window.location.href = target;
+      }
     }
   };
 
@@ -106,16 +136,70 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
       proTip: 'Look for the golden alarm clocks for +50 bonus points and instant Fever gauge fill!',
     },
     {
+      mode: 'pvp' as GameMode,
+      icon: '⚔️',
+      title: '1v1 Smash Duel Arena',
+      category: 'Real-Time Multiplayer PvP',
+      description:
+        'Battle head-to-head with a friend on the same screen or invite them via room link. Features Tug-of-War Pop, Reflex Alarm Slam, and Tap Frenzy.',
+      proTip: 'In Tug-of-War, rapid rhythmic taps are 2x more effective than sporadic frantic clicking!',
+    },
+    {
+      mode: 'sand' as GameMode,
+      icon: '🏖️',
+      title: 'Kinetic Sand ASMR Carver',
+      category: 'Kinetic Sensory Sand Slicing',
+      description:
+        'Slice and sculpt layers of kinetic rainbow sand bricks. Hear the crisp grainy acoustic crunches and watch falling sand grains accumulate.',
+      proTip: 'Switch to the Crinkle Wave knife for the most resonant acoustic slice feedback.',
+    },
+    {
+      mode: 'newton' as GameMode,
+      icon: '⚖️',
+      title: "Newton's Zen Desk Cradle",
+      category: 'Elastic Collision Harmonic Physics',
+      description:
+        'The quintessential executive stress desk toy. Drag chrome or neon balls back and let momentum transfer physics create rhythmic steel clicks.',
+      proTip: 'Pull two balls simultaneously on the left to watch two balls swing out on the right in perfect conservation of momentum!',
+    },
+    {
+      mode: 'press' as GameMode,
+      icon: '🚜',
+      title: 'Hydraulic Press Crusher',
+      category: 'Industrial Force ASMR',
+      description:
+        'Flatten Monday morning alarm clocks, fizzy soda cans, squeaky ducks, and diamonds with 10,000 PSI titanium steel ram power.',
+      proTip: 'Hold the spacebar or crush button to watch materials undergo real physical stress fracture and pancake splatter.',
+    },
+    {
+      mode: 'popit' as GameMode,
+      icon: '🌈',
+      title: '3D Pop-It Silicone Fidget',
+      category: 'Rainbow Sensory Tactile',
+      description:
+        'A 36-bubble rainbow silicone fidget toy with pitch-scaled musical bubbles and 3D perspective flip board for infinite satisfaction.',
+      proTip: 'Try the Speed Rush challenge to test your bubble-popping reaction speed under 30 seconds!',
+    },
+    {
       mode: 'ninja' as GameMode,
       icon: '⚔️',
       title: 'Stress Ninja',
       category: 'Kinetic Slicing Action',
       description:
         'Airborne gadgets (freezing laptops, ringing desk phones, broken routers) launch into the air. Swipe across the screen to slice them clean in half with katana slash trails.',
-      proTip: 'Dodge the ticking red bombs to keep your combo streak alive and maximize Zen coin earnings.',
+      proTip: 'Slice multiple gadgets in a single stroke for bonus multi-slice combos and maximum coin earnings.',
     },
     {
-      mode: 'ragdoll' as GameMode,
+      mode: 'soap' as GameMode,
+      icon: '🧼',
+      title: 'Soap Slicer ASMR',
+      category: 'Kinetic Texture Carving',
+      description:
+        'Carve grid cubes off matcha green, lavender mist, and golden honey soap bars with crisp acoustic blade slices.',
+      proTip: 'Drag smoothly across rows to create satisfying cascading cube tumbles with multi-pitch acoustic feedback.',
+    },
+    {
+      mode: 'slap' as GameMode,
       icon: '🥊',
       title: 'Slap Dummy',
       category: 'Ragdoll Physics Playground',
@@ -124,7 +208,7 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
       proTip: 'Grab the rubber hammer or floppy fish skin from the Armory for squeaky slap sounds!',
     },
     {
-      mode: 'rage_room' as GameMode,
+      mode: 'smash' as GameMode,
       icon: '💥',
       title: 'Virtual Rage Room',
       category: 'Digital Demolition',
@@ -142,13 +226,22 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
       proTip: 'Drag your finger rapidly across lines for satisfying rapid-fire multi-pop ASMR cascades.',
     },
     {
-      mode: 'zen_koi' as GameMode,
+      mode: 'zen' as GameMode,
       icon: '🌸',
       title: 'Zen Koi Pond',
       category: 'Mindful Meditation & Rest',
       description:
         'A calm Kyoto-style water sanctuary. Tap the water surface to create rippling waves, feed swimming Japanese Nishikigoi, bloom pink lotus flowers, and listen to pentatonic singing bowls.',
       proTip: 'Match your breathing rhythm with the expanding water ripples to activate parasympathetic calming.',
+    },
+    {
+      mode: 'shredder' as GameMode,
+      icon: '📄',
+      title: 'Rant Shredder & Rocket',
+      category: 'Emotional Venting & Release',
+      description:
+        'Type your worries, frustrations, and toxic emails onto confidential digital paper, then shred into ribbons, burn into embers, or rocket launch into outer space.',
+      proTip: 'Writing out thoughts externalizes stress, allowing your cognitive brain to release cyclical anxiety.',
     },
   ];
 
@@ -214,14 +307,14 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
               <span>SmashChill Editorial Hub & Knowledge Base</span>
             </h2>
             <p className="text-xs text-slate-400 mt-1">
-              Explore game mechanics, psych studies on stress relief, and workplace ergonomics.
+              Explore game guides, cognitive research on stress relief, and workplace wellness protocols.
             </p>
           </div>
 
-          <div className="flex items-center gap-2 bg-slate-900 p-1.5 rounded-2xl border border-slate-800">
+          <div className="flex items-center gap-1.5 bg-slate-900 p-1.5 rounded-2xl border border-slate-800 flex-wrap">
             <button
               onClick={() => setActiveArticleTab('guides')}
-              className={`px-3.5 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeArticleTab === 'guides'
                   ? 'bg-amber-500 text-slate-950 shadow'
                   : 'text-slate-400 hover:text-white'
@@ -232,168 +325,405 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
             </button>
             <button
               onClick={() => setActiveArticleTab('science')}
-              className={`px-3.5 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeArticleTab === 'science'
                   ? 'bg-amber-500 text-slate-950 shadow'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Brain className="w-3.5 h-3.5" />
-              <span>The Science</span>
+              <span>Micro-Break Science</span>
+            </button>
+            <button
+              onClick={() => setActiveArticleTab('doomscroll')}
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
+                activeArticleTab === 'doomscroll'
+                  ? 'bg-amber-500 text-slate-950 shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Activity className="w-3.5 h-3.5" />
+              <span>Play vs. Doomscrolling</span>
             </button>
             <button
               onClick={() => setActiveArticleTab('ergonomics')}
-              className={`px-3.5 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeArticleTab === 'ergonomics'
                   ? 'bg-amber-500 text-slate-950 shadow'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
               <Timer className="w-3.5 h-3.5" />
-              <span>Micro-Breaks</span>
+              <span>Desk Ergonomics</span>
+            </button>
+            <button
+              onClick={() => setActiveArticleTab('asmr')}
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
+                activeArticleTab === 'asmr'
+                  ? 'bg-amber-500 text-slate-950 shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Headphones className="w-3.5 h-3.5" />
+              <span>Sound & ASMR</span>
+            </button>
+            <button
+              onClick={() => setActiveArticleTab('protocol')}
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
+                activeArticleTab === 'protocol'
+                  ? 'bg-amber-500 text-slate-950 shadow'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Compass className="w-3.5 h-3.5" />
+              <span>Smash vs Chill Guide</span>
             </button>
           </div>
         </div>
 
         {/* --- TAB 1: MINI-GAME STRATEGY GUIDES --- */}
         {activeArticleTab === 'guides' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {gameGuides.map((guide) => (
-              <article
-                key={guide.mode}
-                className="p-5 rounded-3xl bg-slate-900/70 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between space-y-4 group"
-              >
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-3xl p-2 rounded-2xl bg-slate-950 border border-slate-800/80 group-hover:scale-110 transition-transform">
-                      {guide.icon}
-                    </span>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
-                      {guide.category}
-                    </span>
+          <div className="space-y-6">
+            <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800 text-xs text-slate-300">
+              <p>
+                <strong>SmashChill</strong> offers 6 distinct, hand-crafted mini-games designed to release acute frustration and restore cognitive clarity. Learn the control mechanics, high-score tips, and psychological benefits of each game below:
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {gameGuides.map((guide) => (
+                <article
+                  key={guide.mode}
+                  className="p-5 rounded-3xl bg-slate-900/70 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between space-y-4 group"
+                >
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-3xl p-2 rounded-2xl bg-slate-950 border border-slate-800/80 group-hover:scale-110 transition-transform">
+                        {guide.icon}
+                      </span>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+                        {guide.category}
+                      </span>
+                    </div>
+
+                    <h3 className="text-base font-extrabold text-white group-hover:text-amber-400 transition-colors">
+                      {guide.title}
+                    </h3>
+
+                    <p className="text-xs text-slate-400 leading-relaxed">
+                      {guide.description}
+                    </p>
                   </div>
 
-                  <h3 className="text-base font-extrabold text-white group-hover:text-amber-400 transition-colors">
-                    {guide.title}
-                  </h3>
+                  <div className="space-y-3 pt-2 border-t border-slate-800/60">
+                    <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800/80 text-[11px] text-slate-300">
+                      <span className="text-amber-400 font-bold">Pro Tip: </span>
+                      {guide.proTip}
+                    </div>
 
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    {guide.description}
-                  </p>
-                </div>
-
-                <div className="space-y-3 pt-2 border-t border-slate-800/60">
-                  <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800/80 text-[11px] text-slate-300">
-                    <span className="text-amber-400 font-bold">Pro Tip: </span>
-                    {guide.proTip}
+                    {onSelectGame && (
+                      <button
+                        onClick={() => onSelectGame(guide.mode)}
+                        className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <span>Play Now</span>
+                        <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
+                      </button>
+                    )}
                   </div>
-
-                  {onSelectGame && (
-                    <button
-                      onClick={() => onSelectGame(guide.mode)}
-                      className="w-full py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                    >
-                      <span>Play Now</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
-                    </button>
-                  )}
-                </div>
-              </article>
-            ))}
+                </article>
+              ))}
+            </div>
           </div>
         )}
 
-        {/* --- TAB 2: SCIENCE OF STRESS RELIEF --- */}
+        {/* --- TAB 2: ARTICLE 1: SCIENCE OF 5-MINUTE MICRO-BREAKS --- */}
         {activeArticleTab === 'science' && (
           <article className="p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 space-y-6 text-xs sm:text-sm leading-relaxed text-slate-300">
-            <div className="space-y-2">
+            <div className="space-y-2 border-b border-slate-800 pb-4">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold">
                 <Brain className="w-4 h-4" />
-                <span>Neurobiology & Cognitive Psychology</span>
+                <span>Article 1 · Stress Relief Mini Games & Neurobiology</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-white">
-                How Digital Catharsis Resets Your Nervous System
+                The Science of 5-Minute Micro-Breaks: Why Quick Arcade Games Reset Workplace Cortisol
               </h3>
               <p className="text-slate-400 text-xs">
-                Authored by the SmashChill Cognitive Health Research Initiative · Published November 2026
+                By the SmashChill Cognitive Health Research Team · Updated for 2026
               </p>
             </div>
 
-            <div className="space-y-4">
-              <h4 className="text-base font-bold text-white">1. The Sympathetic Response & Cortisol Toxicity</h4>
+            <div className="space-y-3">
+              <h4 className="text-base font-bold text-white">1. The Biological Toll of Sustained Mental Friction</h4>
               <p>
-                When dealing with demanding client deadlines, software bugs, endless video meetings, or sudden personal conflicts, the human brain cannot distinguish psychological threats from physical danger. The amygdala stimulates the adrenal glands to flood the bloodstream with cortisol, epinephrine, and glucose. Heart rate accelerates, muscles constrict, and executive function in the prefrontal cortex declines.
+                When you face challenging software bugs, unyielding deadlines, hostile emails, or back-to-back video conferences, your central nervous system triggers a primitive fight-or-flight alert. In evolutionary biology, this response served to mobilize muscles for immediate survival. In modern desk-bound environments, however, there is no physical sprint or physical challenge to expend this biochemical surge.
               </p>
               <p>
-                In primitive times, this energy was discharged through physical exertion (running, hunting). In modern sedentary desk jobs, cortisol remains pooled in muscle tissue, leading to chronic fatigue, tension headaches, and irritability.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="text-base font-bold text-white">2. Active Cathartic Tapping vs. Passive Rumination</h4>
-              <p>
-                Psychologists emphasize that passively stewing over frustration increases rumination. In contrast, fast-paced kinetic games like <strong>Whack-A-Stress</strong> and <strong>Stress Ninja</strong> engage the motor cortex and hand-eye coordination. Tapping rapidly provides a micro-outlet that acts as an emotional &quot;pressure release valve,&quot; interrupting recursive negative thoughts without real-world damage.
+                As a consequence, elevated cortisol and norepinephrine circulate through the cardiovascular system, tightening neck and shoulder muscle fibers, constricting blood vessels, and depleting glucose reserves in the prefrontal cortex—the exact region responsible for decision-making, creative problem-solving, and emotional regulation.
               </p>
             </div>
 
-            <div className="space-y-4">
-              <h4 className="text-base font-bold text-white">3. Stimulating the Vagus Nerve with Sensory ASMR</h4>
+            <div className="space-y-3">
+              <h4 className="text-base font-bold text-white">2. Why Passive Resting Often Fails to Restore Energy</h4>
               <p>
-                Catharsis alone is only half the cure. Once acute aggression is vented, the body must transition into parasympathetic dominance (&quot;rest and digest&quot;). The <strong>Zen Koi Pond</strong> and <strong>ASMR Soundboard</strong> utilize specific sound waves—such as 432 Hz harmonics, water ripple frequencies, and pentatonic bells—which activate vagal nerve pathways, immediately lowering resting heart rates and restoring mental clarity.
+                Many knowledge workers attempt to recover by simply leaning back, closing their eyes, or staring blankly at another browser tab. While physical stillness is valuable, the cognitive brain frequently remains trapped in a default mode network (DMN) loop, continually replaying recent workplace frustrations or anticipating upcoming stresses. This rumination keeps stress hormones chronically active.
               </p>
+              <p>
+                True mental recovery requires cognitive disengagement—shifting neural processing away from conceptual rumination and into tactile, sensory-motor engagement.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-base font-bold text-white">3. How 300 Seconds of Mini-Gaming Restores Autonomic Balance</h4>
+              <p>
+                Playing fast, casual arcade games like <strong>Whack-A-Stress</strong> and <strong>Stress Ninja</strong> forces rapid, low-stakes visual-motor coordination. By demanding immediate eye-hand reflexes to slice flying laptops or whack alarm clocks, the brain is instantly pulled into an active flow state.
+              </p>
+              <ul className="list-disc pl-5 space-y-1 text-slate-300">
+                <li><strong>Dopamine Micro-Rewards:</strong> Cracking combos and triggering Fever Mode provides small, clean bursts of positive neurotransmitters, breaking depressive cognitive stagnation.</li>
+                <li><strong>Harmless Catharsis:</strong> Whacking digital office stressors satisfies the subconscious desire for physical action without real-world consequences or destruction.</li>
+                <li><strong>Parasympathetic Rebound:</strong> Immediately after venting, spending two minutes in the <strong>Zen Koi Pond</strong> engages the vagus nerve through rhythmic water ripple frequencies, restoring normal heart-rate variability (HRV).</li>
+              </ul>
             </div>
 
             <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs text-slate-400">
-              <span>Scientific Reference: American Psychological Association (APA) Stress in America™ Report & Harvard Health Publishing.</span>
+              <span>Scientific Grounding: American Psychological Association (APA) Workplace Stress Studies & Harvard Business Review.</span>
               <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 ml-2" />
             </div>
           </article>
         )}
 
-        {/* --- TAB 3: WORKPLACE MICRO-BREAKS --- */}
-        {activeArticleTab === 'ergonomics' && (
+        {/* --- TAB 3: ARTICLE 2: ACTIVE PLAY VS DOOMSCROLLING --- */}
+        {activeArticleTab === 'doomscroll' && (
           <article className="p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 space-y-6 text-xs sm:text-sm leading-relaxed text-slate-300">
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 text-xs font-bold">
-                <Timer className="w-4 h-4" />
-                <span>Workplace Wellness & Ergonomics</span>
+            <div className="space-y-2 border-b border-slate-800 pb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-bold">
+                <Activity className="w-4 h-4" />
+                <span>Article 2 · Play Casual Games Online vs. Social Media Burnout</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-black text-white">
-                The 5-Minute Decompression Protocol for Developers & Students
+                Digital Decompression vs. Doomscrolling: How Active Play Restores Mental Energy
               </h3>
               <p className="text-slate-400 text-xs">
-                Combat cognitive fatigue, carpal tunnel strain, and Zoom burnout in your daily schedule.
+                A behavioral analysis on why opening social feeds during work breaks drains you faster.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-base font-bold text-white">1. The Doomscrolling Trap: Passive Consumption vs. Mental Rest</h4>
+              <p>
+                When feelings of fatigue arise, the reflex for millions of internet users is to open algorithmic social media platforms. On the surface, scrolling seems effortless. In reality, modern social algorithmic feeds are explicitly engineered around outrage, hyper-comparison, crisis updates, and erratic sensory stimulation.
+              </p>
+              <p>
+                Passive scrolling stimulates the brain's novelty centers without ever providing completion or closure. Rather than leaving you refreshed, a 10-minute doomscroll session typically spikes cortisol, increases feelings of subjective inadequacy, and exacerbates attention fragmentation.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-base font-bold text-white">2. Active Agency: The Healing Power of Interactive Play</h4>
+              <p>
+                Unlike social media feeds, which position the user as a passive recipient of external stimuli, casual arcade games demand intentional agency. When you play <strong>Slap Dummy</strong>, <strong>Virtual Rage Room</strong>, or <strong>Bubble Wrap Pop</strong>, every outcome is directly dictated by your physical actions.
+              </p>
+              <p>
+                Psychologists identify this sense of agency (the feeling that your direct choices produce clear, tangible results) as one of the most effective antidotes to workplace feelings of helplessness and burnout. In a 3-minute game session, you set a goal, execute reflexes, and experience clean closure with no lingering cognitive residue.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div className="p-4 rounded-2xl bg-rose-950/30 border border-rose-500/30 space-y-2">
+                <h5 className="font-bold text-rose-300 text-sm">❌ 10-Min Social Media Break</h5>
+                <ul className="list-disc pl-4 space-y-1 text-slate-400 text-xs">
+                  <li>Triggers social comparison and anxiety</li>
+                  <li>Leaves attention fragmented and depleted</li>
+                  <li>Encourages chronic passivity and helplessness</li>
+                  <li>No sense of finish or cognitive closure</li>
+                </ul>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-emerald-950/30 border border-emerald-500/30 space-y-2">
+                <h5 className="font-bold text-emerald-300 text-sm">✅ 5-Min SmashChill Session</h5>
+                <ul className="list-disc pl-4 space-y-1 text-slate-400 text-xs">
+                  <li>Restores motor cortex agency and control</li>
+                  <li>Engages full presence and active flow</li>
+                  <li>Provides crisp dopamine without algorithmic addiction</li>
+                  <li>Leaves you refreshed and ready to return to deep work</li>
+                </ul>
+              </div>
+            </div>
+          </article>
+        )}
+
+        {/* --- TAB 4: ARTICLE 3: DESK ERGONOMICS & WRIST RELAXATION --- */}
+        {activeArticleTab === 'ergonomics' && (
+          <article className="p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 space-y-6 text-xs sm:text-sm leading-relaxed text-slate-300">
+            <div className="space-y-2 border-b border-slate-800 pb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 text-xs font-bold">
+                <Timer className="w-4 h-4" />
+                <span>Article 3 · Free Online Arcade Games & Physical Ergonomics</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-white">
+                Ergonomic Gaming at Your Desk: Keyboard & Mouse Relaxation Routines for Coders and Students
+              </h3>
+              <p className="text-slate-400 text-xs">
+                How to integrate lightweight casual play with carpal tunnel prevention and posture resets.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-base font-bold text-white">1. Repetitive Strain Injury (RSI) in Modern Desktops</h4>
+              <p>
+                Software developers, digital designers, writers, and students spend upwards of 8 to 12 hours daily maintaining static flexor tendon postures on mechanical keyboards and trackpads. This isometric contraction restricts blood micro-circulation in the forearms, causing tendon sheath inflammation and median nerve compression (Carpal Tunnel Syndrome).
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-base font-bold text-white">2. Low-Force Dynamic Tapping as Active Tendon Therapy</h4>
+              <p>
+                Contrary to the belief that hands should remain completely motionless during breaks, physiotherapists recommend gentle, non-static kinetic movement. Playing casual web games on SmashChill—such as light-tap bubble popping or fluid mouse swipes in Stress Ninja—stimulates synovial fluid production in wrist joints and promotes vascular flush through forearm muscles.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
                 <span className="text-2xl">👀</span>
-                <h5 className="font-bold text-white">Minute 1: The 20-20-20 Rule</h5>
+                <h5 className="font-bold text-white">Step 1: The 20-20-20 Eye Reset</h5>
                 <p className="text-xs text-slate-400">
-                  Every 20 minutes, look at an object at least 20 feet away for 20 seconds to relax your eye ciliary muscles.
+                  Every 20 minutes, fix your gaze on an object at least 20 feet away for 20 seconds. This relaxes your ciliary eye muscles and combats computer vision syndrome.
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-                <span className="text-2xl">🔨</span>
-                <h5 className="font-bold text-white">Minutes 2–3: Physical Catharsis</h5>
+                <span className="text-2xl">🤲</span>
+                <h5 className="font-bold text-white">Step 2: Wrist Extensor Stretch</h5>
                 <p className="text-xs text-slate-400">
-                  Launch SmashChill. Whack alarms or slice tech bugs for 120 seconds to shake off stiffness and vent tension.
+                  Extend your right arm forward with palm facing out. Gently pull back on fingertips with your left hand for 15 seconds. Switch arms. Repeat twice to relieve flexor tension.
                 </p>
               </div>
 
               <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2">
-                <span className="text-2xl">🧘</span>
-                <h5 className="font-bold text-white">Minutes 4–5: Box Breathing</h5>
+                <span className="text-2xl">🫧</span>
+                <h5 className="font-bold text-white">Step 3: Light Fidget Tapping</h5>
                 <p className="text-xs text-slate-400">
-                  Open the Zen Koi Pond. Inhale for 4 seconds, hold for 4, exhale for 4, hold for 4. Watch your mind calm down.
+                  Spend 90 seconds popping virtual bubble wrap or tossing pebbles into the Zen Koi Pond with relaxed wrists and loose finger joints to restore warmth and circulation.
                 </p>
               </div>
             </div>
+          </article>
+        )}
 
-            <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-200 text-xs">
-              <strong>Tip:</strong> Bookmark <strong className="text-white">smashchill.online</strong> or add it to your browser bookmarks bar for instant access during high-stress work crunch sessions!
+        {/* --- TAB 5: ARTICLE 4: PSYCHOLOGY OF ASMR SOUNDS & POPPING --- */}
+        {activeArticleTab === 'asmr' && (
+          <article className="p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 space-y-6 text-xs sm:text-sm leading-relaxed text-slate-300">
+            <div className="space-y-2 border-b border-slate-800 pb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/20 text-violet-300 text-xs font-bold">
+                <Headphones className="w-4 h-4" />
+                <span>Article 4 · Anti Stress Games & Auditory Neuroscience</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-white">
+                The Psychology of Sound: How Haptic ASMR, Popping, and Cracking Relieve Frustration
+              </h3>
+              <p className="text-slate-400 text-xs">
+                Exploring the neurological triggers behind crisp acoustic feedback and pentatonic chime synthesis.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-base font-bold text-white">1. What Happens in Your Brain During ASMR & Tactile Audio?</h4>
+              <p>
+                Autonomous Sensory Meridian Response (ASMR) describes a distinct tingling sensation originating in the scalp and radiating down the back of the neck in response to specific low-frequency acoustic triggers: crisp clicks, rhythmic water drops, soft pops, and delicate mechanical snaps.
+              </p>
+              <p>
+                Functional MRI (fMRI) studies show that ASMR audio stimulates regions associated with social bonding and calm emotional processing, while dampening activity in the amygdala (the brain's threat-detection hub).
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-base font-bold text-white">2. Synthetic Web Audio vs. Pre-Recorded Noise</h4>
+              <p>
+                Many generic game websites rely on repetitive, pre-recorded audio files that become irritating after 30 seconds. On SmashChill, sound effects are generated algorithmically using the modern Web Audio API. Each bubble wrap pop, katana slice, and singing bowl chime has subtle, randomized micro-variations in pitch, envelope attack, and harmonic decay.
+              </p>
+              <p>
+                This dynamic synthesis prevents acoustic habituation, allowing the auditory cortex to continuously experience fresh, therapeutic novelty that calms racing thoughts.
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 flex items-center justify-between text-xs text-slate-400">
+              <span>Auditory Principle: Web Audio API procedural synthesis calibrated around 432 Hz natural resonance and harmonic overtone series.</span>
+              <ShieldCheck className="w-4 h-4 text-violet-400 shrink-0 ml-2" />
+            </div>
+          </article>
+        )}
+
+        {/* --- TAB 6: ARTICLE 5: SMASH VS CHILL PROTOCOL --- */}
+        {activeArticleTab === 'protocol' && (
+          <article className="p-6 sm:p-8 rounded-3xl bg-slate-900/70 border border-slate-800 space-y-6 text-xs sm:text-sm leading-relaxed text-slate-300">
+            <div className="space-y-2 border-b border-slate-800 pb-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold">
+                <Compass className="w-4 h-4" />
+                <span>Article 5 · The Complete Decompression Decision Protocol</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-white">
+                From Rage Room to Zen Pond: Matching Your Daily Mood to the Perfect Casual Game
+              </h3>
+              <p className="text-slate-400 text-xs">
+                A simple diagnostic matrix to choose the ideal stress-relief game based on your current emotional state.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <h4 className="text-base font-bold text-white">1. Recognizing Your Stress State: High-Arousal vs. Low-Arousal</h4>
+              <p>
+                Not all stress is created equal. Clinical psychology categorizes emotional strain along two distinct axes: arousal (intensity of nervous system activation) and valence (positivity vs. negativity).
+              </p>
+              <ul className="list-disc pl-5 space-y-2 text-slate-300">
+                <li>
+                  <strong className="text-rose-400">High-Arousal Stress (Rage, Frustration, Restlessness):</strong> Characterized by clenched jaws, rapid breathing, and physical irritability. Forcing someone in this state to &quot;sit quietly and meditate&quot; often backfires and heightens internal agitation.
+                </li>
+                <li>
+                  <strong className="text-sky-400">Low-Arousal Stress (Exhaustion, Mental Fog, Emotional Burnout):</strong> Characterized by lethargy, inability to focus, and feelings of detachment. This state requires gentle sensory grounding rather than aggressive physical catharsis.
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h4 className="text-base font-bold text-white">2. The 3-Step Mood-to-Game Recommendation Chart</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="p-4 rounded-2xl bg-rose-950/40 border border-rose-500/40 space-y-2">
+                  <span className="text-2xl">💥</span>
+                  <h5 className="font-bold text-white text-sm">You Feel: Furious or Impatient</h5>
+                  <p className="text-xs text-slate-300">
+                    <strong>Recommended Game:</strong> Virtual Rage Room or Whack-A-Stress.
+                  </p>
+                  <p className="text-[11px] text-slate-400">
+                    Demolish jammed printers and whack relentless alarms for 120 seconds to expend sympathetic energy safely.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-amber-950/40 border border-amber-500/40 space-y-2">
+                  <span className="text-2xl">🫧</span>
+                  <h5 className="font-bold text-white text-sm">You Feel: Distracted or Fidgety</h5>
+                  <p className="text-xs text-slate-300">
+                    <strong>Recommended Game:</strong> Bubble Wrap Pop or Slap Dummy.
+                  </p>
+                  <p className="text-[11px] text-slate-400">
+                    Satisfy kinetic finger restlessness during audio calls with infinite popping sounds and bouncy physics.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 space-y-2">
+                  <span className="text-2xl">🌸</span>
+                  <h5 className="font-bold text-white text-sm">You Feel: Drained or Anxious</h5>
+                  <p className="text-xs text-slate-300">
+                    <strong>Recommended Game:</strong> Zen Koi Pond & Breathing Orb.
+                  </p>
+                  <p className="text-[11px] text-slate-400">
+                    Feed peaceful swimming koi, watch lotus petals bloom, and synchronize breathing with expanding water ripples.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-xs text-slate-300">
+              <span className="text-amber-400 font-bold">Pro Tip: </span>
+              Start with 60 seconds of <strong>Stress Ninja</strong> to vent, then immediately switch to <strong>Zen Koi Pond</strong> for 120 seconds. This &quot;Smash-then-Chill&quot; sequence mirrors nature&apos;s natural tension-release cycle.
             </div>
           </article>
         )}
@@ -404,7 +734,7 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
       {/* ======================================================== */}
       <div className="space-y-4 pt-4 border-t border-slate-800">
         <div className="flex items-center gap-2">
-          <HelpCircle className="w-5 h-5 text-amber-400" />
+          <BookOpen className="w-5 h-5 text-amber-400" />
           <h2 className="text-xl sm:text-2xl font-black text-white">
             Frequently Asked Questions (FAQ)
           </h2>
@@ -446,6 +776,125 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
         </div>
       </div>
 
+      {/* Editorial, Publisher & Community Hub (Essential for Google AdSense Trust & E-E-A-T) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 sm:p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl">
+        {/* Column 1: Publisher & Webmaster Transparency */}
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <span className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+              <Mail className="w-4 h-4" />
+            </span>
+            <div>
+              <h4 className="text-sm font-black text-white uppercase tracking-wider">
+                Publisher & Support Desk
+              </h4>
+              <p className="text-[11px] text-slate-400">Direct creator contact for users & advertisers</p>
+            </div>
+          </div>
+
+          <p className="text-xs text-slate-300 leading-relaxed">
+            SmashChill is developed and maintained with care to provide free, high-performance stress-relief mini games. For support inquiries, bug reports, DMCA, or advertising partnerships, please reach out directly:
+          </p>
+
+          <div className="p-3.5 rounded-2xl bg-slate-950/80 border border-slate-800/80 space-y-2 text-xs">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-slate-400">Developer & Studio:</span>
+              <span className="text-slate-200 font-semibold text-[11px]">SmashChill Interactive</span>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-slate-400">Official Inquiries:</span>
+              <a
+                href="mailto:wegoswami@gmail.com"
+                className="font-mono font-bold text-amber-400 hover:text-amber-300 underline flex items-center gap-1"
+              >
+                <span>wegoswami@gmail.com</span>
+                <Send className="w-3 h-3" />
+              </a>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-slate-400">Platform Status:</span>
+              <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold text-[11px]">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                Active · Free Worldwide Access
+              </span>
+            </div>
+            <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-900">
+              <span className="text-slate-400">Need Assistance?</span>
+              {onOpenLegal && (
+                <button
+                  type="button"
+                  onClick={() => onOpenLegal('contact')}
+                  className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 text-[11px] font-bold transition-colors cursor-pointer"
+                >
+                  Open Contact Form →
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Column 2: Weekly Wellness Newsletter Subscription */}
+        <div className="space-y-3 flex flex-col justify-between">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <Brain className="w-4 h-4" />
+              </span>
+              <div>
+                <h4 className="text-sm font-black text-white uppercase tracking-wider">
+                  Weekly Decompression Tips
+                </h4>
+                <p className="text-[11px] text-slate-400">Mindfulness micro-breaks & new game drops</p>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+              Join 12,000+ remote workers and students receiving our quick 2-minute Friday mindfulness guide. 100% spam-free, unsubscribe anytime.
+            </p>
+          </div>
+
+          {newsletterSubscribed ? (
+            <div className="p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 flex items-center gap-2.5 text-xs text-emerald-300">
+              <CheckCircle className="w-5 h-5 text-emerald-400 shrink-0" />
+              <div>
+                <span className="font-bold">You're Subscribed!</span> Check your inbox this Friday for calm micro-break strategies.
+              </div>
+            </div>
+          ) : (
+            <form onSubmit={handleSubscribe} className="space-y-2">
+              <div className="flex items-center gap-2">
+                <input
+                  type="email"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="Enter your email address..."
+                  required
+                  className="flex-1 px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
+                />
+                <button
+                  type="submit"
+                  className="px-4 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-xs transition-transform hover:scale-105 active:scale-95 cursor-pointer shadow-md shrink-0 flex items-center gap-1.5"
+                >
+                  <span>Subscribe</span>
+                  <Send className="w-3.5 h-3.5" />
+                </button>
+              </div>
+              <p className="text-[10px] text-slate-500">
+                By subscribing, you agree to our{' '}
+                <button
+                  type="button"
+                  onClick={() => onOpenLegal && onOpenLegal('privacy')}
+                  className="underline hover:text-slate-400 cursor-pointer"
+                >
+                  Privacy Policy
+                </button>
+                . We never sell your data.
+              </p>
+            </form>
+          )}
+        </div>
+      </div>
+
       {/* Trust & Transparency Badge */}
       <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-3 text-center sm:text-left">
         <div className="flex items-center gap-2">
@@ -461,6 +910,13 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
               className="text-amber-400 hover:underline cursor-pointer font-bold text-[11px]"
             >
               Privacy Policy
+            </button>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <button
+              onClick={() => onOpenLegal('about')}
+              className="text-amber-400 hover:underline cursor-pointer font-bold text-[11px]"
+            >
+              About Us
             </button>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button

@@ -2,7 +2,20 @@ import React from 'react';
 import { Volume2, VolumeX, Trophy, Music, Maximize, Minimize, Shield, Gift, HelpCircle } from 'lucide-react';
 import { sound } from '../utils/audio';
 
-export type GameMode = 'whack' | 'ninja' | 'slap' | 'smash' | 'bubble' | 'zen';
+export type GameMode =
+  | 'whack'
+  | 'pvp'
+  | 'press'
+  | 'popit'
+  | 'ninja'
+  | 'sand'
+  | 'newton'
+  | 'soap'
+  | 'slap'
+  | 'smash'
+  | 'bubble'
+  | 'zen'
+  | 'shredder';
 
 interface HeaderProps {
   activeMode: GameMode;
@@ -14,6 +27,7 @@ interface HeaderProps {
   coins: number;
   onOpenArmory: () => void;
   onOpenQuests: () => void;
+  onOpenWheel?: () => void;
   onOpenLeaderboard: () => void;
   onOpenStats: () => void;
   isFullscreen: boolean;
@@ -31,6 +45,7 @@ export const Header: React.FC<HeaderProps> = ({
   coins,
   onOpenArmory,
   onOpenQuests,
+  onOpenWheel,
   onOpenLeaderboard,
   onOpenStats,
   isFullscreen,
@@ -43,12 +58,19 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   const games: { id: GameMode; label: string; icon: string }[] = [
-    { id: 'whack', label: 'Whack-A-Stress', icon: '🔨' },
-    { id: 'ninja', label: 'Stress Ninja', icon: '⚔️' },
+    { id: 'whack', label: 'Whack', icon: '🔨' },
+    { id: 'pvp', label: '1v1 Duel', icon: '⚔️' },
+    { id: 'press', label: 'Hydraulic Press', icon: '🚜' },
+    { id: 'popit', label: 'Pop-It 3D', icon: '🌈' },
+    { id: 'ninja', label: 'Ninja', icon: '🥷' },
+    { id: 'sand', label: 'Kinetic Sand', icon: '🏖️' },
+    { id: 'newton', label: 'Newton', icon: '⚖️' },
+    { id: 'soap', label: 'Soap Carve', icon: '🧼' },
     { id: 'slap', label: 'Slap Dummy', icon: '🥊' },
     { id: 'smash', label: 'Smash Room', icon: '💥' },
-    { id: 'bubble', label: 'Bubble Pop', icon: '🫧' },
-    { id: 'zen', label: 'Zen Pond', icon: '🌸' },
+    { id: 'bubble', label: 'Bubble Wrap', icon: '🫧' },
+    { id: 'zen', label: 'Koi Zen', icon: '🌸' },
+    { id: 'shredder', label: 'Rant Shredder', icon: '📄' },
   ];
 
   return (
@@ -66,7 +88,7 @@ export const Header: React.FC<HeaderProps> = ({
         </button>
       </div>
 
-      {/* Zone 2: Fast game switcher links */}
+      {/* Zone 2: Fast game switcher & Article links */}
       <nav className="hidden xl:flex items-center gap-2 text-xs font-bold text-slate-300">
         {games.map((g) => {
           const isActive = activeMode === g.id;
@@ -88,6 +110,14 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           );
         })}
+
+        <a
+          href="#guides-and-faq"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-colors"
+        >
+          <span>📚</span>
+          <span>Wellness Guides</span>
+        </a>
       </nav>
 
       {/* Zone 3: Coins, Armory, Quests, BGM & Fullscreen */}
@@ -121,6 +151,18 @@ export const Header: React.FC<HeaderProps> = ({
           <Gift className="w-4 h-4 text-emerald-400" />
           <span className="hidden md:inline">Quests</span>
         </button>
+
+        {/* Lucky Zen Spin Wheel */}
+        {onOpenWheel && (
+          <button
+            onClick={onOpenWheel}
+            title="Lucky Zen Spin Wheel"
+            className="p-2 rounded-xl bg-slate-900 border border-amber-500/40 text-amber-300 hover:text-white hover:border-amber-400 transition-colors cursor-pointer flex items-center gap-1 text-xs font-bold shadow-sm"
+          >
+            <span className="text-sm animate-spin-slow">🎡</span>
+            <span className="hidden md:inline text-amber-300 font-black">Spin</span>
+          </button>
+        )}
 
         {/* Lo-Fi Music Toggle */}
         <button

@@ -312,6 +312,7 @@ export const RageRoom: React.FC<RageRoomProps> = ({ lang, onItemSmashed }) => {
     return () => {
       isRunning = false;
       if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+      if (comboTimerRef.current) clearTimeout(comboTimerRef.current);
     };
   }, []);
 
