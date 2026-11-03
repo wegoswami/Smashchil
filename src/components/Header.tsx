@@ -1,5 +1,5 @@
 import React from 'react';
-import { Volume2, VolumeX, Trophy, Music, Maximize, Minimize, Shield, Gift } from 'lucide-react';
+import { Volume2, VolumeX, Trophy, Music, Maximize, Minimize, Shield, Gift, HelpCircle } from 'lucide-react';
 import { sound } from '../utils/audio';
 
 export type GameMode = 'whack' | 'ninja' | 'slap' | 'smash' | 'bubble' | 'zen';
@@ -18,6 +18,7 @@ interface HeaderProps {
   onOpenStats: () => void;
   isFullscreen: boolean;
   onToggleFullscreen: () => void;
+  onOpenLegal?: (tab: 'about' | 'contact' | 'privacy') => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -34,6 +35,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenStats,
   isFullscreen,
   onToggleFullscreen,
+  onOpenLegal,
 }) => {
   const handleToggleSound = () => {
     const next = sound.toggleMute();
@@ -153,6 +155,18 @@ export const Header: React.FC<HeaderProps> = ({
           <Trophy className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">Ranks</span>
         </button>
+
+        {/* Help & Compliance Desk */}
+        {onOpenLegal && (
+          <button
+            onClick={() => onOpenLegal('about')}
+            title="About & Help"
+            className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
+            aria-label="About and Help"
+          >
+            <HelpCircle className="w-4 h-4 text-amber-400" />
+          </button>
+        )}
 
         {/* Fullscreen Pro Toggle */}
         <button

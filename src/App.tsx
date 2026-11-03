@@ -246,6 +246,7 @@ export default function App() {
         onOpenStats={() => setIsStatsOpen(true)}
         isFullscreen={isFullscreen}
         onToggleFullscreen={handleToggleFullscreen}
+        onOpenLegal={(tab) => setLegalModal(tab)}
       />
 
       {/* Main Arcade Experience */}
@@ -342,34 +343,40 @@ export default function App() {
         />
 
         {/* On-Page SEO Content, Viral Share & Google FAQ Section */}
-        <SeoContentSection />
+        <SeoContentSection
+          onSelectGame={(mode) => {
+            setActiveMode(mode);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          onOpenLegal={(tab) => setLegalModal(tab)}
+        />
       </main>
 
       {/* Bottom Arcade Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950/90 px-6 py-4 text-xs text-slate-500">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
+      <footer className="border-t border-slate-900 bg-slate-950/90 px-6 py-5 text-xs text-slate-500">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
-            <span className="font-extrabold text-slate-200">⚡ SMASHCHILL PRO ARCADE</span>
+            <span className="font-extrabold text-slate-200">⚡ SMASHCHILL ARCADE</span>
             <span aria-hidden="true" className="text-slate-700">·</span>
-            <span>Global Anti-Stress & Venting Web Game</span>
+            <span>Free Anti-Stress Decompression Platform</span>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <span className="text-emerald-400 font-medium">Domain: smashchill.online</span>
           </div>
 
-          {/* Quick links & Legal pages mandatory for AdSense approval */}
-          <div className="flex flex-wrap items-center justify-center gap-3 text-slate-400 font-medium">
-            <button
-              onClick={() => setIsArmoryOpen(true)}
+          {/* Quick links & Legal compliance pages */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 text-slate-400 font-medium text-[11px]">
+            <a
+              href="#guides-and-faq"
               className="text-amber-400 hover:text-amber-300 hover:underline cursor-pointer transition-colors"
             >
-              Armory
-            </button>
+              Game Guides & FAQ
+            </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
-              onClick={() => setIsQuestsOpen(true)}
-              className="text-emerald-400 hover:text-emerald-300 hover:underline cursor-pointer transition-colors"
+              onClick={() => setIsArmoryOpen(true)}
+              className="text-slate-300 hover:text-amber-300 hover:underline cursor-pointer transition-colors"
             >
-              Daily Quests
+              Armory
             </button>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
@@ -383,27 +390,45 @@ export default function App() {
               onClick={() => setLegalModal('terms')}
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
-              Terms of Service
+              Terms
             </button>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setLegalModal('about')}
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
-              About Us
+              About
             </button>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setLegalModal('contact')}
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
-              Contact Us
+              Contact
+            </button>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <button
+              onClick={() => setLegalModal('disclaimer')}
+              className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
+            >
+              Disclaimer
+            </button>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <button
+              onClick={() => setLegalModal('dmca')}
+              className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
+            >
+              DMCA
             </button>
           </div>
         </div>
-        <div className="max-w-5xl mx-auto mt-2 pt-2 border-t border-slate-900/60 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500">
-          <span>&copy; {new Date().getFullYear()} SmashChill. All rights reserved. Free online stress relief platform.</span>
-          <span className="font-mono text-emerald-400/80">AdSense Publisher ID: pub-7658190454263901</span>
+        <div className="max-w-5xl mx-auto mt-3 pt-3 border-t border-slate-900/60 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2">
+          <span>&copy; {new Date().getFullYear()} SmashChill Arcade. All rights reserved. Stress-relief digital sandbox.</span>
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-emerald-400/90">Publisher: pub-7658190454263901</span>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <span className="font-mono text-slate-400">wegoswami@gmail.com</span>
+          </div>
         </div>
       </footer>
 
@@ -453,8 +478,12 @@ export default function App() {
       {/* Cookie Consent Banner */}
       <CookieBanner onOpenPrivacy={() => setLegalModal('privacy')} />
 
-      {/* Legal Modals (Privacy, Terms, About, Contact) */}
-      <LegalModals activeModal={legalModal} onClose={() => setLegalModal(null)} />
+      {/* Legal Modals (Privacy, Terms, About, Contact, Disclaimer, DMCA) */}
+      <LegalModals
+        activeModal={legalModal}
+        onClose={() => setLegalModal(null)}
+        onSwitchTab={(tab) => setLegalModal(tab)}
+      />
     </div>
   );
 }
