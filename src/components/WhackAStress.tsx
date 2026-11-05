@@ -274,6 +274,7 @@ export const WhackAStress: React.FC<WhackAStressProps> = ({ onWatchAd }) => {
                 <button
                   onClick={(e) => handleWhack(idx, e)}
                   disabled={!isPlaying}
+                  aria-label={mole ? `Whack ${mole.label} for ${mole.points} points` : `Empty target hole ${idx + 1}`}
                   className={`relative z-10 w-full h-full flex flex-col items-center justify-center cursor-pointer transition-all duration-150 transform ${
                     mole
                       ? 'translate-y-0 scale-100 opacity-100 animate-bounce'
@@ -300,9 +301,9 @@ export const WhackAStress: React.FC<WhackAStressProps> = ({ onWatchAd }) => {
         {!isPlaying && (
           <div className="absolute inset-0 z-30 flex flex-col items-center justify-center p-6 bg-slate-950/85 backdrop-blur-md rounded-3xl text-center">
             <span className="text-6xl mb-2 animate-bounce">🔨</span>
-            <h3 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-500 to-yellow-400">
+            <h2 className="text-3xl md:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-500 to-yellow-400">
               {score > 0 ? 'TIME OVER!' : 'WHACK-A-STRESS!'}
-            </h3>
+            </h2>
             <p className="text-sm text-slate-300 mt-2 max-w-sm">
               {score > 0
                 ? `You scored ${score} PTS! All annoying notifications have been slammed down.`

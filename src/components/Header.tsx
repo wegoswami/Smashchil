@@ -177,6 +177,7 @@ export const Header: React.FC<HeaderProps> = ({
                           setIsGamesDropdownOpen(false);
                           sound.playBonk();
                         }}
+                        aria-label={`Switch game to ${g.label}`}
                         className={`flex items-center gap-2 p-2 rounded-xl text-left transition-all cursor-pointer text-xs ${
                           isSelected
                             ? 'bg-rose-600 text-white font-bold shadow'
@@ -480,6 +481,7 @@ export const Header: React.FC<HeaderProps> = ({
                       sound.playBonk();
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
+                    aria-label={`Play ${g.label} arcade game`}
                     className={`flex items-center gap-2.5 p-2.5 rounded-2xl border text-left cursor-pointer transition-all ${
                       isSelected
                         ? 'bg-rose-600 border-white text-white font-black shadow-lg scale-102'

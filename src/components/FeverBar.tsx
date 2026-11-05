@@ -58,7 +58,14 @@ export const FeverBar: React.FC<FeverBarProps> = ({
         </div>
 
         {/* Progress Bar Container */}
-        <div className="flex-1 max-w-xs md:max-w-md h-3.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800 relative">
+        <div
+          role="progressbar"
+          aria-valuenow={Math.round(feverCharge)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label="Fever meter charge"
+          className="flex-1 max-w-xs md:max-w-md h-3.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800 relative"
+        >
           <div
             className={`h-full transition-all duration-200 rounded-full ${
               isFeverActive

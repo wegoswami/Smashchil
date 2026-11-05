@@ -8,10 +8,7 @@ import { AsmrSoundboard } from './components/AsmrSoundboard';
 import { CursorSparkles } from './components/CursorSparkles';
 import { FeverBar } from './components/FeverBar';
 import { AdBanner } from './components/AdBanner';
-import { SeoContentSection } from './components/SeoContentSection';
 import { CookieBanner } from './components/CookieBanner';
-import { MoodMatcher } from './components/MoodMatcher';
-import { DailyStreakBadge } from './components/DailyStreakBadge';
 import { KeyboardShortcutsBadge } from './components/KeyboardShortcutsBadge';
 import { sound } from './utils/audio';
 
@@ -29,7 +26,8 @@ const SmashDuelPvp = lazy(() => import('./components/SmashDuelPvp').then(m => ({
 const KineticSand = lazy(() => import('./components/KineticSand').then(m => ({ default: m.KineticSand })));
 const NewtonCradle = lazy(() => import('./components/NewtonCradle').then(m => ({ default: m.NewtonCradle })));
 
-// Dynamic lazy imports for modals (only loaded when clicked)
+// Dynamic lazy imports for modals and below-the-fold content
+const SeoContentSection = lazy(() => import('./components/SeoContentSection').then(m => ({ default: m.SeoContentSection })));
 const LuckyWheelModal = lazy(() => import('./components/LuckyWheelModal').then(m => ({ default: m.LuckyWheelModal })));
 const StatsModal = lazy(() => import('./components/StatsModal').then(m => ({ default: m.StatsModal })));
 const LeaderboardModal = lazy(() => import('./components/LeaderboardModal').then(m => ({ default: m.LeaderboardModal })));
@@ -414,15 +412,8 @@ export default function App() {
           onActivateFever={activateFever}
         />
 
-        {/* 1-Tap Instant Mood Matcher & Stress Diagnostic */}
-        <MoodMatcher
-          activeMode={activeMode}
-          onSelectGame={(mode) => setActiveMode(mode)}
-          onRewardCoins={(amt) => setCoins((c) => c + amt)}
-        />
-
-        {/* Category Filter Navigation & Daily Decompression Streak */}
-        <div className="w-full max-w-4xl flex flex-col sm:flex-row items-center justify-between gap-2.5 mb-3 px-1">
+        {/* Category Filter Navigation */}
+        <div className="w-full max-w-4xl flex items-center justify-between mb-3 px-1">
           <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-2xl border border-slate-800 text-xs font-bold" role="group" aria-label="Game category filter">
             <button
               onClick={() => {
@@ -470,9 +461,6 @@ export default function App() {
               🌸 Chill ({games.filter((g) => g.category === 'chill').length})
             </button>
           </div>
-
-          {/* Daily Decompression Streak & Free Coin Bonus */}
-          <DailyStreakBadge onRewardCoins={(amt) => setCoins((c) => c + amt)} />
         </div>
 
         {/* Game Selection Cards Strip - Responsive across Mobile, Tablet, Laptop & Desktop */}
@@ -639,13 +627,15 @@ export default function App() {
         />
 
         {/* On-Page SEO Content, Viral Share & Google FAQ Section */}
-        <SeoContentSection
-          onSelectGame={(mode) => {
-            setActiveMode(mode);
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
-          onOpenLegal={(tab) => setLegalModal(tab)}
-        />
+        <Suspense fallback={null}>
+          <SeoContentSection
+            onSelectGame={(mode) => {
+              setActiveMode(mode);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+            onOpenLegal={(tab) => setLegalModal(tab)}
+          />
+        </Suspense>
       </main>
 
       {/* Bottom Arcade Footer */}
