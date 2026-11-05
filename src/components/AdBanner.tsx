@@ -26,11 +26,13 @@ export const AdBanner: React.FC<AdBannerProps> = ({
   const pushedRef = useRef<boolean>(false);
 
   useEffect(() => {
-    // Only push if element is mounted, has not already pushed, and has measurable width > 0
+    let timerId: ReturnType<typeof setTimeout> | null = null;
+    let rafId: number | null = null;
+    let attempts = 0;
+
     const tryPushAd = () => {
       if (pushedRef.current) return;
       const el = insRef.current;
-      // CRITICAL: Ensure element exists and has availableWidth > 0 before calling adsbygoogle.push()
       if (el && el.offsetWidth > 0 && !el.getAttribute('data-adsbygoogle-status')) {
         try {
           if (typeof window !== 'undefined') {
@@ -41,28 +43,20 @@ export const AdBanner: React.FC<AdBannerProps> = ({
         } catch {
           // Gracefully ignore ad blocker or script failures
         }
+      } else if (!pushedRef.current && attempts < 5) {
+        attempts++;
+        timerId = setTimeout(tryPushAd, 800);
       }
     };
 
-    // Delay slightly to ensure browser has completed layout pass
-    const timer = setTimeout(tryPushAd, 800);
-
-    // Also observe container resize so when width becomes > 0, it pushes safely
-    let observer: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== 'undefined' && insRef.current) {
-      observer = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          if (entry.contentRect.width > 0) {
-            tryPushAd();
-          }
-        }
-      });
-      observer.observe(insRef.current);
-    }
+    // Wait until browser layout is settled
+    rafId = requestAnimationFrame(() => {
+      timerId = setTimeout(tryPushAd, 600);
+    });
 
     return () => {
-      clearTimeout(timer);
-      if (observer) observer.disconnect();
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      if (timerId !== null) clearTimeout(timerId);
     };
   }, []);
 
