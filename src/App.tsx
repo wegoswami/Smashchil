@@ -10,6 +10,9 @@ import { FeverBar } from './components/FeverBar';
 import { AdBanner } from './components/AdBanner';
 import { SeoContentSection } from './components/SeoContentSection';
 import { CookieBanner } from './components/CookieBanner';
+import { MoodMatcher } from './components/MoodMatcher';
+import { DailyStreakBadge } from './components/DailyStreakBadge';
+import { KeyboardShortcutsBadge } from './components/KeyboardShortcutsBadge';
 import { sound } from './utils/audio';
 
 // Dynamic lazy imports for non-initial games to cut 400+ KiB from initial JS bundle
@@ -346,6 +349,38 @@ export default function App() {
   const visibleGames =
     gameFilter === 'all' ? games : games.filter((g) => g.category === gameFilter);
 
+  // Global Keyboard Shortcuts for Desktop & Laptop Speed
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable)) {
+        return;
+      }
+
+      const num = parseInt(e.key, 10);
+      if (!isNaN(num) && num >= 1 && num <= games.length) {
+        const selected = games[num - 1];
+        if (selected) {
+          setActiveMode(selected.id);
+          sound.playBonk();
+        }
+      } else if (e.key === '0' && games.length >= 10) {
+        setActiveMode(games[9].id);
+        sound.playBonk();
+      } else if (e.key.toLowerCase() === 'm') {
+        const next = sound.toggleMute();
+        setIsMuted(next);
+      } else if (e.key.toLowerCase() === 'b') {
+        handleToggleBgm();
+      } else if (e.key.toLowerCase() === 'f') {
+        handleToggleFullscreen();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [games]);
+
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-rose-500 selection:text-white">
       {/* Interactive Cursor Particle Sparks */}
@@ -379,8 +414,15 @@ export default function App() {
           onActivateFever={activateFever}
         />
 
-        {/* Category Filter Navigation */}
-        <div className="w-full max-w-4xl flex items-center justify-between gap-2 mb-3 px-1">
+        {/* 1-Tap Instant Mood Matcher & Stress Diagnostic */}
+        <MoodMatcher
+          activeMode={activeMode}
+          onSelectGame={(mode) => setActiveMode(mode)}
+          onRewardCoins={(amt) => setCoins((c) => c + amt)}
+        />
+
+        {/* Category Filter Navigation & Daily Decompression Streak */}
+        <div className="w-full max-w-4xl flex flex-col sm:flex-row items-center justify-between gap-2.5 mb-3 px-1">
           <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-2xl border border-slate-800 text-xs font-bold" role="group" aria-label="Game category filter">
             <button
               onClick={() => {
@@ -429,11 +471,8 @@ export default function App() {
             </button>
           </div>
 
-          <div className="hidden sm:flex items-center gap-1 text-[11px] font-bold text-slate-400">
-            <span>Instant Play</span>
-            <span aria-hidden="true" className="text-slate-700">·</span>
-            <span className="text-amber-400">100% Free</span>
-          </div>
+          {/* Daily Decompression Streak & Free Coin Bonus */}
+          <DailyStreakBadge onRewardCoins={(amt) => setCoins((c) => c + amt)} />
         </div>
 
         {/* Game Selection Cards Strip - Responsive across Mobile, Tablet, Laptop & Desktop */}
@@ -765,6 +804,12 @@ export default function App() {
 
       {/* Cookie Consent Banner */}
       <CookieBanner onOpenPrivacy={() => setLegalModal('privacy')} />
+
+      {/* Desktop Keyboard Shortcuts Indicator */}
+      <KeyboardShortcutsBadge
+        onToggleMute={() => setIsMuted(sound.toggleMute())}
+        onToggleFullscreen={handleToggleFullscreen}
+      />
 
       {/* Interactive Desk Companion Mascot */}
       <ZenPetMascot
