@@ -1,8 +1,9 @@
 # SmashChill
-> Free online stress relief arcade games, anti-stress mini-games, and mindful ASMR web toys for students, remote workers, and gamers worldwide.
+> Free online stress relief arcade games, anti-stress mini-games, and mindful ASMR web toys for students, remote workers, and gamers worldwide. URL: https://smashchill.online
 
 ## Online Arcade Games
-- [1v1 Smash Duel](https://smashchill.online/#duel): Real-time multiplayer decompression battles with local 2P split-screen and online room invite codes.
+- [Whack-A-Stress](https://smashchill.online/#whack): Reflex cubicle alarm and error icon whacking.
+- [1v1 Smash Duel](https://smashchill.online/#pvp): Real-time multiplayer decompression battles with local 2P split-screen and online room invite codes.
 - [Hydraulic Press Crusher](https://smashchill.online/#press): 10,000 PSI industrial squashing physics.
 - [Pop-It 3D Fidget](https://smashchill.online/#popit): 36-bubble rainbow silicone sensory toy with perspective board flip.
 - [Stress Ninja](https://smashchill.online/#ninja): Kinetic gadget slicing action with multi-slice combos.
@@ -15,7 +16,17 @@
 - [Koi Zen Pond](https://smashchill.online/#zen): Mindful Kyoto water sanctuary with swimming koi and blooming lotus flowers.
 - [Rant Shredder](https://smashchill.online/#shredder): Emotional cognitive venting, shredding, and digital burning.
 
-## Legal & AdSense Policies
-- [Privacy Policy](https://smashchill.online/): Compliant with Google AdSense, DoubleClick DART cookies, GDPR, and CCPA.
-- [Terms of Service](https://smashchill.online/): Global casual gaming terms and intellectual property rules.
-- [Contact Support](https://smashchill.online/): Official support contact at wegoswami@gmail.com.
+## Clinical Research & Wellness Blog
+- [Science of 5-Minute Micro-Breaks](https://smashchill.online/#blog-science-of-5-minute-micro-breaks): Why quick web games reset workplace cortisol faster than passive rest.
+- [Digital Decompression vs. Doomscrolling](https://smashchill.online/#blog-digital-decompression-vs-doomscrolling): Why playing casual games restores energy while social media drains it.
+- [Ergonomic Gaming & Wrist Relaxation](https://smashchill.online/#blog-ergonomic-gaming-wrist-relaxation-routines): Keyboard and mouse relaxation routines for coders, designers, and students.
+- [The Psychology of ASMR & Sound](https://smashchill.online/#blog-psychology-of-asmr-popping-cracking-sounds): How haptic audio, popping, and singing bowls silence mental churn.
+- [Smash vs. Chill Decision Protocol](https://smashchill.online/#blog-from-rage-room-to-zen-pond-decision-protocol): Matching high-arousal rage versus low-arousal exhaustion to the right game.
+- [Sensory Grounding for ADHD & Neurodivergent Focus](https://smashchill.online/#blog-sensory-grounding-for-adhd-and-neurodivergent-focus): Tactile fidgeting and executive function restoration.
+- [The Psychology of Virtual Destruction](https://smashchill.online/#blog-the-psychology-of-virtual-destruction-demolition): Why smashing office printers and slicing tech banishes frustration without guilt.
+
+## Legal & AdSense Compliance Policies
+- [Privacy Policy](https://smashchill.online/#privacy): Compliant with Google AdSense, DoubleClick DART cookies, GDPR, and CCPA.
+- [Terms of Service](https://smashchill.online/#terms): Global casual gaming terms and intellectual property rules.
+- [About SmashChill](https://smashchill.online/#about): Mission statement, human curation values, and editorial principles.
+- [Contact Support](https://smashchill.online/#contact): Official support contact at wegoswami@gmail.com.

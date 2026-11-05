@@ -626,6 +626,13 @@ export default function App() {
               href="#guides-and-faq"
               className="text-amber-400 hover:text-amber-300 hover:underline cursor-pointer transition-colors"
             >
+              Wellness Blog
+            </a>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <a
+              href="#guides-and-faq"
+              className="text-slate-300 hover:text-amber-300 hover:underline cursor-pointer transition-colors"
+            >
               Game Guides & FAQ
             </a>
             <span aria-hidden="true" className="text-slate-700">·</span>

@@ -118,11 +118,11 @@ export const Header: React.FC<HeaderProps> = ({
 
         <a
           href="#guides-and-faq"
-          aria-label="Read Wellness Guides and Frequently Asked Questions"
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-colors"
+          aria-label="Read SmashChill Wellness Blog, Clinical Research, and Game Guides"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-500/15 to-amber-500/15 hover:from-rose-500/25 hover:to-amber-500/25 text-amber-300 border border-amber-500/30 transition-colors"
         >
-          <span>📚</span>
-          <span>Wellness Guides</span>
+          <span>📰</span>
+          <span>Wellness Blog & Guides</span>
         </a>
       </nav>
 

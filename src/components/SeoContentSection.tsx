@@ -19,21 +19,45 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { GameMode } from './Header';
+import { BLOG_ARTICLES, BlogArticle } from '../data/blogArticles';
+import { BlogReaderModal } from './BlogReaderModal';
+import { Newspaper, Sparkles, Filter, ExternalLink } from 'lucide-react';
 
 interface SeoContentSectionProps {
   onSelectGame?: (mode: GameMode) => void;
   onOpenLegal?: (tab: 'privacy' | 'terms' | 'about' | 'contact' | 'disclaimer') => void;
 }
 
-export type EditorialTab = 'guides' | 'science' | 'doomscroll' | 'ergonomics' | 'asmr' | 'protocol';
+export type EditorialTab = 'blog' | 'guides' | 'science' | 'doomscroll' | 'ergonomics' | 'asmr' | 'protocol';
 
 export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGame, onOpenLegal }) => {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
-  const [activeArticleTab, setActiveArticleTab] = useState<EditorialTab>('guides');
+  const [activeArticleTab, setActiveArticleTab] = useState<EditorialTab>('blog');
+  const [selectedBlogArticle, setSelectedBlogArticle] = useState<BlogArticle | null>(null);
+  const [blogCategoryFilter, setBlogCategoryFilter] = useState<string>('All');
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [newsletterSubscribed, setNewsletterSubscribed] = useState(() => {
     return localStorage.getItem('smashchill_newsletter_subscribed') === 'true';
   });
+
+  React.useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash;
+      if (hash.startsWith('#blog-')) {
+        const slug = hash.replace('#blog-', '');
+        const match = BLOG_ARTICLES.find((a) => a.slug === slug || a.id === slug);
+        if (match) {
+          setSelectedBlogArticle(match);
+          setActiveArticleTab('blog');
+        }
+      } else if (hash === '#blog' || hash === '#blogs') {
+        setActiveArticleTab('blog');
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -313,6 +337,18 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
 
           <div className="flex items-center gap-1.5 bg-slate-900 p-1.5 rounded-2xl border border-slate-800 flex-wrap">
             <button
+              onClick={() => setActiveArticleTab('blog')}
+              aria-label="View Wellness Blog and Articles"
+              className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
+                activeArticleTab === 'blog'
+                  ? 'bg-rose-600 text-white shadow-md scale-102'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              <Newspaper className="w-3.5 h-3.5 text-rose-300" />
+              <span>Wellness Blog ({BLOG_ARTICLES.length})</span>
+            </button>
+            <button
               onClick={() => setActiveArticleTab('guides')}
               className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer flex items-center gap-1.5 ${
                 activeArticleTab === 'guides'
@@ -321,7 +357,7 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
               }`}
             >
               <Gamepad2 className="w-3.5 h-3.5" />
-              <span>Game Guides</span>
+              <span>Game Guides (13)</span>
             </button>
             <button
               onClick={() => setActiveArticleTab('science')}
@@ -381,12 +417,162 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
           </div>
         </div>
 
+        {/* --- TAB 0: WELLNESS BLOG & CLINICAL ARTICLES --- */}
+        {activeArticleTab === 'blog' && (
+          <div className="space-y-6">
+            {/* Category Filter Pills */}
+            <div className="flex items-center gap-2 flex-wrap text-xs font-bold">
+              <span className="text-slate-400 flex items-center gap-1 text-[11px] uppercase tracking-wider font-bold">
+                <Filter className="w-3.5 h-3.5 text-amber-400" />
+                <span>Filter:</span>
+              </span>
+              {['All', 'Neuroscience', 'Workplace', 'Ergonomics', 'ASMR & Audio', 'Mindfulness', 'ADHD & Focus'].map(
+                (cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setBlogCategoryFilter(cat)}
+                    className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
+                      blogCategoryFilter === cat
+                        ? 'bg-amber-500 text-slate-950 shadow font-extrabold'
+                        : 'bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700'
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                )
+              )}
+            </div>
+
+            {/* Featured Hero Story Card */}
+            {blogCategoryFilter === 'All' && (
+              <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-rose-950/20 to-slate-950 border-2 border-rose-500/30 shadow-2xl space-y-4">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <span className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-rose-600 text-white shadow-sm flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>Featured Clinical Research</span>
+                  </span>
+                  <div className="flex items-center gap-2 text-xs text-slate-400 font-mono">
+                    <span>6 min read</span>
+                    <span>·</span>
+                    <span>November 2026</span>
+                  </div>
+                </div>
+
+                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-snug">
+                  The Science of 5-Minute Micro-Breaks: Why Quick Web Games Reset Workplace Cortisol Faster Than Passive Rest
+                </h3>
+
+                <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-3xl">
+                  Recent studies in neuroergonomics reveal that staring blankly at a monitor or scrolling social feeds does not stop Default Mode Network (DMN) rumination. Discover how 300 seconds of low-stakes interactive arcade play discharges acute fight-or-flight hormones and restores executive prefrontal energy.
+                </p>
+
+                <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-slate-800">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center text-lg border border-slate-700">
+                      🧠
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-white">Dr. Elena Vance, Ph.D.</div>
+                      <div className="text-[10px] text-slate-400">Cognitive Neuroscientist</div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setSelectedBlogArticle(BLOG_ARTICLES[0])}
+                    className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs shadow-lg transition-transform hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
+                  >
+                    <span>Read Full Article & Study</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Grid of all Blog Articles */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {BLOG_ARTICLES.filter((a) => blogCategoryFilter === 'All' || a.category === blogCategoryFilter).map(
+                (art) => (
+                  <article
+                    key={art.id}
+                    className="p-5 rounded-3xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition-all flex flex-col justify-between space-y-4 group shadow-lg hover:shadow-2xl hover:scale-[1.01]"
+                  >
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-3xl p-2.5 rounded-2xl bg-slate-950 border border-slate-800/80 group-hover:scale-110 transition-transform">
+                          {art.icon}
+                        </span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
+                          {art.category}
+                        </span>
+                      </div>
+
+                      <div className="space-y-1">
+                        <h4 className="text-base font-extrabold text-white group-hover:text-amber-400 transition-colors line-clamp-2">
+                          {art.title}
+                        </h4>
+                        <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed">
+                          {art.summary}
+                        </p>
+                      </div>
+
+                      {/* Tag badges */}
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        {art.tags.slice(0, 3).map((tag, tIdx) => (
+                          <span
+                            key={tIdx}
+                            className="text-[9px] px-2 py-0.5 rounded-md bg-slate-950 text-slate-400 border border-slate-800 font-mono"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-3 pt-3 border-t border-slate-800/60">
+                      <div className="flex items-center justify-between text-[11px] text-slate-400">
+                        <div className="flex items-center gap-1.5">
+                          <span>{art.author.avatar}</span>
+                          <span className="truncate max-w-[120px] font-medium">{art.author.name}</span>
+                        </div>
+                        <span className="font-mono text-[10px] text-slate-500">{art.readTime}</span>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setSelectedBlogArticle(art)}
+                          className="flex-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                        >
+                          <BookOpen className="w-3.5 h-3.5 text-amber-400" />
+                          <span>Read Article</span>
+                        </button>
+
+                        {onSelectGame && (
+                          <button
+                            onClick={() => {
+                              onSelectGame(art.recommendedGame.mode);
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            title={`Play ${art.recommendedGame.label}`}
+                            className="p-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-amber-500/40 text-amber-400 hover:text-white transition-colors cursor-pointer"
+                          >
+                            <span className="text-sm">{art.recommendedGame.icon}</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </article>
+                )
+              )}
+            </div>
+          </div>
+        )}
+
         {/* --- TAB 1: MINI-GAME STRATEGY GUIDES --- */}
         {activeArticleTab === 'guides' && (
           <div className="space-y-6">
             <div className="p-4 rounded-2xl bg-slate-900/50 border border-slate-800 text-xs text-slate-300">
               <p>
-                <strong>SmashChill</strong> offers 6 distinct, hand-crafted mini-games designed to release acute frustration and restore cognitive clarity. Learn the control mechanics, high-score tips, and psychological benefits of each game below:
+                <strong>SmashChill</strong> offers 13 distinct, hand-crafted mini-games designed to release acute frustration and restore cognitive clarity. Learn the control mechanics, high-score tips, and psychological benefits of each game below:
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -928,6 +1114,15 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
           </div>
         )}
       </div>
+
+      {/* Interactive Full Article Reader Modal */}
+      <BlogReaderModal
+        article={selectedBlogArticle}
+        onClose={() => setSelectedBlogArticle(null)}
+        onSelectGame={onSelectGame}
+        onNavigateArticle={(art) => setSelectedBlogArticle(art)}
+        allArticles={BLOG_ARTICLES}
+      />
     </section>
   );
 };
