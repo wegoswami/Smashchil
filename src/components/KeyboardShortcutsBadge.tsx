@@ -69,6 +69,14 @@ export const KeyboardShortcutsBadge: React.FC<KeyboardShortcutsBadgeProps> = ({
               </div>
 
               <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/70 border border-slate-800">
+                <span className="text-slate-300 font-medium">Previous / Next Game</span>
+                <div className="flex items-center gap-1 font-mono text-[11px]">
+                  <kbd className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-amber-300 font-bold">◀</kbd>
+                  <kbd className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-amber-300 font-bold">▶</kbd>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-950/70 border border-slate-800">
                 <span className="text-slate-300 font-medium">Toggle Mute / Audio</span>
                 <kbd className="px-2.5 py-0.5 rounded bg-slate-800 border border-slate-700 text-sky-400 font-mono font-bold">M</kbd>
               </div>

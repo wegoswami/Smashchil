@@ -347,6 +347,54 @@ export default function App() {
   const visibleGames =
     gameFilter === 'all' ? games : games.filter((g) => g.category === gameFilter);
 
+  const currentIndex = games.findIndex((g) => g.id === activeMode);
+  const prevGame = games[(currentIndex - 1 + games.length) % games.length] || games[0];
+  const nextGame = games[(currentIndex + 1) % games.length] || games[0];
+  const currentGame = games[currentIndex] || games[0];
+
+  const gameStageRef = React.useRef<HTMLDivElement>(null);
+
+  const handleSelectMode = (mode: GameMode) => {
+    setActiveMode(mode);
+    sound.playBonk();
+    sound.vibrate(15);
+    if (typeof window !== 'undefined' && window.innerWidth < 768) {
+      setTimeout(() => {
+        gameStageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 50);
+    }
+  };
+
+  const goToPrevGame = () => {
+    handleSelectMode(prevGame.id);
+  };
+
+  const goToNextGame = () => {
+    handleSelectMode(nextGame.id);
+  };
+
+  const pickRandomGame = () => {
+    const others = games.filter((g) => g.id !== activeMode);
+    const chosen = others[Math.floor(Math.random() * others.length)] || games[0];
+    handleSelectMode(chosen.id);
+  };
+
+  const GAME_TIPS: Record<GameMode, string> = {
+    whack: 'Smash pop-up alarms & unread emails before time runs out!',
+    pvp: 'Tap fast to push the balance and defeat your opponent!',
+    press: 'Choose an object and tap PRESS DOWN to squash at 10,000 PSI!',
+    popit: 'Pop all 36 rainbow bubbles, then tap Flip Board for reverse pops!',
+    sand: 'Drag your cutter through the rainbow layers for crunchy ASMR slices!',
+    newton: 'Pull back any chrome sphere and release to launch momentum transfers!',
+    ninja: 'Swipe or drag across flying tech gadgets to slice them in mid-air!',
+    soap: 'Shave the kinetic textured cube for crisp tactile audio relaxation!',
+    slap: 'Grab the bouncy stress dummy, pull back, and release to slap!',
+    smash: 'Click anywhere to sledgehammer CRT monitors and annoying office tech!',
+    bubble: 'Tap or drag across bubble wrap for infinite sensory pops!',
+    zen: 'Tap water to feed koi fish, create gentle ripples, and bloom lotuses.',
+    shredder: 'Type your frustration, then tap Shred or Digital Burn to destroy it.',
+  };
+
   // Global Keyboard Shortcuts for Desktop & Laptop Speed
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -359,12 +407,14 @@ export default function App() {
       if (!isNaN(num) && num >= 1 && num <= games.length) {
         const selected = games[num - 1];
         if (selected) {
-          setActiveMode(selected.id);
-          sound.playBonk();
+          handleSelectMode(selected.id);
         }
       } else if (e.key === '0' && games.length >= 10) {
-        setActiveMode(games[9].id);
-        sound.playBonk();
+        handleSelectMode(games[9].id);
+      } else if (e.key === 'ArrowRight' || e.key === ']') {
+        goToNextGame();
+      } else if (e.key === 'ArrowLeft' || e.key === '[') {
+        goToPrevGame();
       } else if (e.key.toLowerCase() === 'm') {
         const next = sound.toggleMute();
         setIsMuted(next);
@@ -377,7 +427,7 @@ export default function App() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [games]);
+  }, [games, currentIndex, prevGame, nextGame]);
 
   return (
     <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-rose-500 selection:text-white">
@@ -470,10 +520,7 @@ export default function App() {
             return (
               <button
                 key={g.id}
-                onClick={() => {
-                  setActiveMode(g.id);
-                  sound.playBonk();
-                }}
+                onClick={() => handleSelectMode(g.id)}
                 aria-label={`Play ${g.title} (${g.subtitle})`}
                 aria-current={isCurrent ? 'page' : undefined}
                 className={`relative flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all cursor-pointer ${
@@ -500,8 +547,55 @@ export default function App() {
           })}
         </div>
 
+        {/* Quick Game Navigation Controller & Instant Tip Bar */}
+        <div className="w-full max-w-4xl flex items-center justify-between gap-2 p-2 sm:p-2.5 mb-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-xs shadow-md">
+          {/* Previous Game Button */}
+          <button
+            onClick={goToPrevGame}
+            aria-label={`Switch to previous game: ${prevGame.title}`}
+            className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-200 font-bold transition-transform active:scale-95 cursor-pointer shrink-0"
+          >
+            <span>◀</span>
+            <span className="hidden sm:inline">Prev</span>
+          </button>
+
+          {/* Center: Current Game Info & 1-Line How to Play Tip */}
+          <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2 text-center truncate px-1">
+            <div className="flex items-center gap-1.5 font-black text-white shrink-0">
+              <span className="text-base">{currentGame.icon}</span>
+              <span className="truncate max-w-[120px] sm:max-w-none">{currentGame.title}</span>
+              <span className="text-[10px] text-amber-400 font-mono">({currentIndex + 1}/{games.length})</span>
+            </div>
+            <span className="hidden md:inline text-slate-600">·</span>
+            <span className="text-[10px] sm:text-[11px] text-slate-300 font-medium truncate max-w-[200px] sm:max-w-xs md:max-w-md">
+              💡 {GAME_TIPS[activeMode] || currentGame.subtitle}
+            </span>
+          </div>
+
+          {/* Right: Random Game & Next Game Button */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <button
+              onClick={pickRandomGame}
+              aria-label="Pick a random anti-stress game"
+              title="Surprise me with a random anti-stress game"
+              className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 font-bold transition-transform active:scale-95 cursor-pointer"
+            >
+              <span>🎲</span>
+              <span className="hidden sm:inline">Random</span>
+            </button>
+            <button
+              onClick={goToNextGame}
+              aria-label={`Switch to next game: ${nextGame.title}`}
+              className="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black transition-transform active:scale-95 cursor-pointer shadow-md"
+            >
+              <span className="hidden sm:inline">Next</span>
+              <span>▶</span>
+            </button>
+          </div>
+        </div>
+
         {/* Active Game Stage with Suspense code splitting */}
-        <div className="w-full flex justify-center min-h-[420px]">
+        <div ref={gameStageRef} className="w-full flex justify-center min-h-[420px]">
           <Suspense fallback={<GameLoadingSkeleton />}>
             {activeMode === 'whack' && (
               <WhackAStress onWatchAd={() => setIsRewardedAdOpen(true)} />
