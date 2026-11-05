@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SmashChill: Free Online Arcade &amp; Stress Relief Mini Games</title>
     <meta name="description" content="Play free online arcade games on SmashChill! Quick stress relief mini games to play casual games online, smash daily anxiety, and unwind instantly." />
     <meta name="keywords" content="free online arcade games, stress relief mini games, play casual games online, smashchill.online, smashchill, anti stress games, smash game online, whack a mole online, fruit ninja web, bubble wrap pop, ragdoll slap, ASMR relax game" />
@@ -12,15 +12,52 @@
     <meta name="theme-color" content="#e11d48" />
     <meta name="google-site-verification" content="google0cc72dfb11e39ef0" />
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YDSST77TEZ"></script>
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+
+    <!-- Google AdSense Account Verification (Immediate for Crawler Verification) -->
+    <meta name="google-adsense-account" content="ca-pub-7658190454263901" />
+
+    <!-- Non-blocking Analytics & AdSense Loader -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-YDSST77TEZ');
-      gtag('config', 'G-M32KPTKR7C');
+      // Defer third-party scripts to unblock Core Web Vitals (FCP/LCP)
+      (function() {
+        var loaded = false;
+        function loadThirdParty() {
+          if (loaded) return;
+          loaded = true;
+
+          // 1. Google Tag Manager / Analytics
+          var gtm = document.createElement('script');
+          gtm.src = 'https://www.googletagmanager.com/gtag/js?id=G-YDSST77TEZ';
+          gtm.async = true;
+          document.head.appendChild(gtm);
+          gtag('config', 'G-YDSST77TEZ');
+          gtag('config', 'G-M32KPTKR7C');
+
+          // 2. Google AdSense
+          var ads = document.createElement('script');
+          ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7658190454263901';
+          ads.async = true;
+          ads.crossOrigin = 'anonymous';
+          document.head.appendChild(ads);
+        }
+
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(function() { setTimeout(loadThirdParty, 1200); });
+        } else {
+          setTimeout(loadThirdParty, 2000);
+        }
+
+        ['pointerdown', 'keydown', 'touchstart', 'scroll'].forEach(function(ev) {
+          window.addEventListener(ev, loadThirdParty, { once: true, passive: true });
+        });
+      })();
     </script>
 
     <!-- Canonical & Alternate Languages -->
@@ -38,7 +75,7 @@
     <meta property="og:url" content="https://smashchill.online/" />
     <meta property="og:title" content="SmashChill — Smash Stress & Find Calm | Free Online Arcade" />
     <meta property="og:description" content="Play SmashChill online: Whack alarms, slice flying PCs like a ninja, slap the stress dummy, and relax with koi fish. 100% free, no download required!" />
-    <meta property="og:image" content="https://smashchill.online/og-image.jpg" />
+    <meta property="og:image" content="https://smashchill.online/icon.svg" />
 
     <!-- Twitter / X Cards -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -46,13 +83,7 @@
     <meta name="twitter:url" content="https://smashchill.online/" />
     <meta name="twitter:title" content="SmashChill — Smash Stress & Find Calm | Free Online Arcade" />
     <meta name="twitter:description" content="Play SmashChill online: Whack alarms, slice flying PCs like a ninja, slap the stress dummy, and relax with koi fish. 100% free, no download required!" />
-    <meta name="twitter:image" content="https://smashchill.online/og-image.jpg" />
-
-    <!-- Google AdSense Account Verification -->
-    <meta name="google-adsense-account" content="ca-pub-7658190454263901" />
-
-    <!-- Google AdSense Official Script -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7658190454263901" crossorigin="anonymous"></script>
+    <meta name="twitter:image" content="https://smashchill.online/icon.svg" />
 
     <!-- Schema.org Multi-Entity Structured Data (JSON-LD) for #1 Google Ranking -->
     <script type="application/ld+json">

@@ -1,0 +1,21 @@
+# SmashChill
+> Free online stress relief arcade games, anti-stress mini-games, and mindful ASMR web toys for students, remote workers, and gamers worldwide.
+
+## Online Arcade Games
+- [1v1 Smash Duel](https://smashchill.online/#duel): Real-time multiplayer decompression battles with local 2P split-screen and online room invite codes.
+- [Hydraulic Press Crusher](https://smashchill.online/#press): 10,000 PSI industrial squashing physics.
+- [Pop-It 3D Fidget](https://smashchill.online/#popit): 36-bubble rainbow silicone sensory toy with perspective board flip.
+- [Stress Ninja](https://smashchill.online/#ninja): Kinetic gadget slicing action with multi-slice combos.
+- [Kinetic Sand ASMR](https://smashchill.online/#sand): Layered rainbow sand carving with acoustic crunchy slices.
+- [Newton's Cradle](https://smashchill.online/#newton): Harmonic collision physics with momentum transfer.
+- [Soap Slicer ASMR](https://smashchill.online/#soap): Kinetic textured soap carving with crisp audio feedback.
+- [Slap Dummy](https://smashchill.online/#slap): High-tension spring ragdoll slap physics.
+- [Virtual Rage Room](https://smashchill.online/#smash): Cathartic office monitor and printer demolition.
+- [Bubble Wrap Pop](https://smashchill.online/#bubble): Tactile sensory bubble wrap popping.
+- [Koi Zen Pond](https://smashchill.online/#zen): Mindful Kyoto water sanctuary with swimming koi and blooming lotus flowers.
+- [Rant Shredder](https://smashchill.online/#shredder): Emotional cognitive venting, shredding, and digital burning.
+
+## Legal & AdSense Policies
+- [Privacy Policy](https://smashchill.online/): Compliant with Google AdSense, DoubleClick DART cookies, GDPR, and CCPA.
+- [Terms of Service](https://smashchill.online/): Global casual gaming terms and intellectual property rules.
+- [Contact Support](https://smashchill.online/): Official support contact at wegoswami@gmail.com.

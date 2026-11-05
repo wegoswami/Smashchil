@@ -73,6 +73,7 @@ export const FeverBar: React.FC<FeverBarProps> = ({
         {!isFeverActive && feverCharge >= 100 ? (
           <button
             onClick={onActivateFever}
+            aria-label="Unleash Fever Mode for 3X Score Frenzy"
             className="px-3 py-1 rounded-xl bg-gradient-to-r from-rose-600 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-white font-black text-xs shadow-lg animate-bounce transition-transform hover:scale-105 active:scale-95 cursor-pointer shrink-0"
           >
             ⚡ UNLEASH!

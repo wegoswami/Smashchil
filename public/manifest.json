@@ -1,18 +1,27 @@
 {
-  "name": "SmashChill — Smash Stress & Chill Out",
+  "id": "/",
+  "name": "SmashChill — Free Online Arcade & Stress Relief Mini Games",
   "short_name": "SmashChill",
-  "description": "The ultimate stress relief arcade to smash frustrations, slice lag, and find deep calm.",
+  "description": "Play free online arcade games on SmashChill: Whack alarms, slice laptops like a ninja, and relax with koi fish.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#020617",
   "theme_color": "#e11d48",
-  "orientation": "portrait-primary",
+  "orientation": "any",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ],
-  "categories": ["games", "arcade", "entertainment", "health"]
+  "categories": ["games", "entertainment", "lifestyle"]
 }

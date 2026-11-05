@@ -1,33 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { Header, GameMode } from './components/Header';
 import { WhackAStress } from './components/WhackAStress';
-import { HydraulicPress } from './components/HydraulicPress';
-import { PopItFidget } from './components/PopItFidget';
-import { StressNinja } from './components/StressNinja';
-import { SoapCarver } from './components/SoapCarver';
-import { SlapDummy } from './components/SlapDummy';
-import { RageRoom } from './components/RageRoom';
-import { BubblePop } from './components/BubblePop';
-import { ZenPond } from './components/ZenPond';
-import { RantShredder } from './components/RantShredder';
-import { SmashDuelPvp } from './components/SmashDuelPvp';
-import { KineticSand } from './components/KineticSand';
-import { NewtonCradle } from './components/NewtonCradle';
-import { LuckyWheelModal } from './components/LuckyWheelModal';
+import type { WeaponSkin } from './components/ArmoryModal';
+import type { LegalModalType } from './components/LegalModals';
 import { ZenPetMascot } from './components/ZenPetMascot';
-import { StatsModal } from './components/StatsModal';
-import { LeaderboardModal } from './components/LeaderboardModal';
-import { RewardedAdModal } from './components/RewardedAdModal';
-import { ArmoryModal, WeaponSkin } from './components/ArmoryModal';
-import { DailyQuestsModal } from './components/DailyQuestsModal';
 import { AsmrSoundboard } from './components/AsmrSoundboard';
 import { CursorSparkles } from './components/CursorSparkles';
 import { FeverBar } from './components/FeverBar';
 import { AdBanner } from './components/AdBanner';
 import { SeoContentSection } from './components/SeoContentSection';
-import { LegalModals, LegalModalType } from './components/LegalModals';
 import { CookieBanner } from './components/CookieBanner';
 import { sound } from './utils/audio';
+
+// Dynamic lazy imports for non-initial games to cut 400+ KiB from initial JS bundle
+const HydraulicPress = lazy(() => import('./components/HydraulicPress').then(m => ({ default: m.HydraulicPress })));
+const PopItFidget = lazy(() => import('./components/PopItFidget').then(m => ({ default: m.PopItFidget })));
+const StressNinja = lazy(() => import('./components/StressNinja').then(m => ({ default: m.StressNinja })));
+const SoapCarver = lazy(() => import('./components/SoapCarver').then(m => ({ default: m.SoapCarver })));
+const SlapDummy = lazy(() => import('./components/SlapDummy').then(m => ({ default: m.SlapDummy })));
+const RageRoom = lazy(() => import('./components/RageRoom').then(m => ({ default: m.RageRoom })));
+const BubblePop = lazy(() => import('./components/BubblePop').then(m => ({ default: m.BubblePop })));
+const ZenPond = lazy(() => import('./components/ZenPond').then(m => ({ default: m.ZenPond })));
+const RantShredder = lazy(() => import('./components/RantShredder').then(m => ({ default: m.RantShredder })));
+const SmashDuelPvp = lazy(() => import('./components/SmashDuelPvp').then(m => ({ default: m.SmashDuelPvp })));
+const KineticSand = lazy(() => import('./components/KineticSand').then(m => ({ default: m.KineticSand })));
+const NewtonCradle = lazy(() => import('./components/NewtonCradle').then(m => ({ default: m.NewtonCradle })));
+
+// Dynamic lazy imports for modals (only loaded when clicked)
+const LuckyWheelModal = lazy(() => import('./components/LuckyWheelModal').then(m => ({ default: m.LuckyWheelModal })));
+const StatsModal = lazy(() => import('./components/StatsModal').then(m => ({ default: m.StatsModal })));
+const LeaderboardModal = lazy(() => import('./components/LeaderboardModal').then(m => ({ default: m.LeaderboardModal })));
+const RewardedAdModal = lazy(() => import('./components/RewardedAdModal').then(m => ({ default: m.RewardedAdModal })));
+const ArmoryModal = lazy(() => import('./components/ArmoryModal').then(m => ({ default: m.ArmoryModal })));
+const DailyQuestsModal = lazy(() => import('./components/DailyQuestsModal').then(m => ({ default: m.DailyQuestsModal })));
+const LegalModals = lazy(() => import('./components/LegalModals').then(m => ({ default: m.LegalModals })));
+
+const GameLoadingSkeleton: React.FC = () => (
+  <div
+    className="w-full max-w-4xl h-[420px] rounded-3xl bg-slate-900/60 border border-slate-800 flex flex-col items-center justify-center p-6 gap-3 animate-pulse select-none"
+    role="status"
+    aria-label="Loading SmashChill Arcade Game"
+  >
+    <div className="w-12 h-12 rounded-2xl bg-slate-800/80 flex items-center justify-center text-2xl shadow-inner">
+      ⚡
+    </div>
+    <span className="text-xs font-mono font-bold text-slate-400">Loading SmashChill Arcade Game...</span>
+  </div>
+);
 
 const DEFAULT_WEAPONS: WeaponSkin[] = [
   {
@@ -362,12 +381,14 @@ export default function App() {
 
         {/* Category Filter Navigation */}
         <div className="w-full max-w-4xl flex items-center justify-between gap-2 mb-3 px-1">
-          <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-2xl border border-slate-800 text-xs font-bold">
+          <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-2xl border border-slate-800 text-xs font-bold" role="group" aria-label="Game category filter">
             <button
               onClick={() => {
                 setGameFilter('all');
                 sound.playBonk();
               }}
+              aria-label={`Show all ${games.length} anti-stress games`}
+              aria-pressed={gameFilter === 'all'}
               className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
                 gameFilter === 'all'
                   ? 'bg-rose-600 text-white shadow'
@@ -381,6 +402,8 @@ export default function App() {
                 setGameFilter('smash');
                 sound.playBonk();
               }}
+              aria-label={`Filter ${games.filter((g) => g.category === 'smash').length} smash action games`}
+              aria-pressed={gameFilter === 'smash'}
               className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
                 gameFilter === 'smash'
                   ? 'bg-amber-500 text-slate-950 font-black shadow'
@@ -394,6 +417,8 @@ export default function App() {
                 setGameFilter('chill');
                 sound.playBonk();
               }}
+              aria-label={`Filter ${games.filter((g) => g.category === 'chill').length} soothing chill games`}
+              aria-pressed={gameFilter === 'chill'}
               className={`px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
                 gameFilter === 'chill'
                   ? 'bg-teal-500 text-slate-950 font-black shadow'
@@ -411,8 +436,8 @@ export default function App() {
           </div>
         </div>
 
-        {/* Game Selection Cards Strip */}
-        <div className="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-5">
+        {/* Game Selection Cards Strip - Responsive across Mobile, Tablet, Laptop & Desktop */}
+        <div className="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-2.5 mb-5" role="region" aria-label="Arcade games selector">
           {visibleGames.map((g) => {
             const isCurrent = activeMode === g.id;
             return (
@@ -422,6 +447,8 @@ export default function App() {
                   setActiveMode(g.id);
                   sound.playBonk();
                 }}
+                aria-label={`Play ${g.title} (${g.subtitle})`}
+                aria-current={isCurrent ? 'page' : undefined}
                 className={`relative flex flex-col items-center justify-center p-3 rounded-2xl border-2 transition-all cursor-pointer ${
                   isCurrent
                     ? `bg-gradient-to-b ${g.bg} scale-102 shadow-xl border-white text-white`
@@ -446,118 +473,120 @@ export default function App() {
           })}
         </div>
 
-        {/* Active Game Stage */}
-        <div className="w-full flex justify-center">
-          {activeMode === 'whack' && (
-            <WhackAStress onWatchAd={() => setIsRewardedAdOpen(true)} />
-          )}
+        {/* Active Game Stage with Suspense code splitting */}
+        <div className="w-full flex justify-center min-h-[420px]">
+          <Suspense fallback={<GameLoadingSkeleton />}>
+            {activeMode === 'whack' && (
+              <WhackAStress onWatchAd={() => setIsRewardedAdOpen(true)} />
+            )}
 
-          {activeMode === 'pvp' && (
-            <SmashDuelPvp
-              onDuelWin={(reward) => {
-                boostFever(35);
-                setCoins((c) => c + reward);
-                setSessionStats((s) => ({ ...s, itemsSmashed: s.itemsSmashed + 15 }));
-              }}
-            />
-          )}
+            {activeMode === 'pvp' && (
+              <SmashDuelPvp
+                onDuelWin={(reward) => {
+                  boostFever(35);
+                  setCoins((c) => c + reward);
+                  setSessionStats((s) => ({ ...s, itemsSmashed: s.itemsSmashed + 15 }));
+                }}
+              />
+            )}
 
-          {activeMode === 'sand' && (
-            <KineticSand
-              onSandSliced={() => {
-                boostFever(3);
-                setCoins((c) => c + 2);
-              }}
-            />
-          )}
+            {activeMode === 'sand' && (
+              <KineticSand
+                onSandSliced={() => {
+                  boostFever(3);
+                  setCoins((c) => c + 2);
+                }}
+              />
+            )}
 
-          {activeMode === 'newton' && (
-            <NewtonCradle
-              onBallHit={() => {
-                boostFever(1);
-                setCoins((c) => c + 1);
-              }}
-            />
-          )}
+            {activeMode === 'newton' && (
+              <NewtonCradle
+                onBallHit={() => {
+                  boostFever(1);
+                  setCoins((c) => c + 1);
+                }}
+              />
+            )}
 
-          {activeMode === 'press' && (
-            <HydraulicPress
-              onItemCrushed={() => {
-                boostFever(22);
-                setCoins((c) => c + 30);
-                setSessionStats((s) => ({ ...s, itemsSmashed: s.itemsSmashed + 1 }));
-              }}
-              onWatchAd={() => setIsRewardedAdOpen(true)}
-            />
-          )}
+            {activeMode === 'press' && (
+              <HydraulicPress
+                onItemCrushed={() => {
+                  boostFever(22);
+                  setCoins((c) => c + 30);
+                  setSessionStats((s) => ({ ...s, itemsSmashed: s.itemsSmashed + 1 }));
+                }}
+                onWatchAd={() => setIsRewardedAdOpen(true)}
+              />
+            )}
 
-          {activeMode === 'popit' && (
-            <PopItFidget
-              onPop={() => {
-                boostFever(2);
-                setCoins((c) => c + 1);
-                setSessionStats((s) => ({ ...s, bubblesPopped: s.bubblesPopped + 1 }));
-              }}
-            />
-          )}
+            {activeMode === 'popit' && (
+              <PopItFidget
+                onPop={() => {
+                  boostFever(2);
+                  setCoins((c) => c + 1);
+                  setSessionStats((s) => ({ ...s, bubblesPopped: s.bubblesPopped + 1 }));
+                }}
+              />
+            )}
 
-          {activeMode === 'ninja' && (
-            <StressNinja onWatchAd={() => setIsRewardedAdOpen(true)} />
-          )}
+            {activeMode === 'ninja' && (
+              <StressNinja onWatchAd={() => setIsRewardedAdOpen(true)} />
+            )}
 
-          {activeMode === 'soap' && (
-            <SoapCarver
-              lang="hi"
-              onCubeCut={() => {
-                boostFever(3);
-                setCoins((c) => c + 2);
-              }}
-            />
-          )}
+            {activeMode === 'soap' && (
+              <SoapCarver
+                lang="hi"
+                onCubeCut={() => {
+                  boostFever(3);
+                  setCoins((c) => c + 2);
+                }}
+              />
+            )}
 
-          {activeMode === 'slap' && (
-            <SlapDummy
-              onSlapHit={() => {
-                boostFever(8);
-                setCoins((c) => c + 5);
-              }}
-            />
-          )}
+            {activeMode === 'slap' && (
+              <SlapDummy
+                onSlapHit={() => {
+                  boostFever(8);
+                  setCoins((c) => c + 5);
+                }}
+              />
+            )}
 
-          {activeMode === 'smash' && (
-            <RageRoom
-              lang="hi"
-              onItemSmashed={() => {
-                boostFever(25);
-                setCoins((c) => c + 25);
-                setSessionStats((s) => ({ ...s, itemsSmashed: s.itemsSmashed + 1 }));
-              }}
-            />
-          )}
+            {activeMode === 'smash' && (
+              <RageRoom
+                lang="hi"
+                onItemSmashed={() => {
+                  boostFever(25);
+                  setCoins((c) => c + 25);
+                  setSessionStats((s) => ({ ...s, itemsSmashed: s.itemsSmashed + 1 }));
+                }}
+              />
+            )}
 
-          {activeMode === 'bubble' && (
-            <BubblePop
-              lang="hi"
-              onBubblePopped={() => {
-                boostFever(2);
-                setCoins((c) => c + 1);
-                setSessionStats((s) => ({ ...s, bubblesPopped: s.bubblesPopped + 1 }));
-              }}
-            />
-          )}
+            {activeMode === 'bubble' && (
+              <BubblePop
+                lang="hi"
+                onBubblePopped={() => {
+                  boostFever(2);
+                  setCoins((c) => c + 1);
+                  setSessionStats((s) => ({ ...s, bubblesPopped: s.bubblesPopped + 1 }));
+                }}
+              />
+            )}
 
-          {activeMode === 'zen' && <ZenPond />}
+            {activeMode === 'zen' && <ZenPond />}
 
-          {activeMode === 'shredder' && (
-            <RantShredder
-              lang="hi"
-              onRantDestroyed={() => {
-                boostFever(30);
-                setCoins((c) => c + 50);
-                setSessionStats((s) => ({ ...s, rantsDestroyed: s.rantsDestroyed + 1 }));
-              }}
-            />
-          )}
+            {activeMode === 'shredder' && (
+              <RantShredder
+                lang="hi"
+                onRantDestroyed={() => {
+                  boostFever(30);
+                  setCoins((c) => c + 50);
+                  setSessionStats((s) => ({ ...s, rantsDestroyed: s.rantsDestroyed + 1 }));
+                }}
+              />
+            )}
+          </Suspense>
         </div>
 
         {/* Pro Instant ASMR Soundboard */}
@@ -665,71 +694,74 @@ export default function App() {
         </div>
       </footer>
 
-      {/* Armory Modal */}
-      <ArmoryModal
-        isOpen={isArmoryOpen}
-        onClose={() => setIsArmoryOpen(false)}
-        coins={coins}
-        setCoins={setCoins}
-        equippedHammer={equippedHammer}
-        setEquippedHammer={setEquippedHammer}
-        weapons={weapons}
-        setWeapons={setWeapons}
-      />
+      {/* Lazy Loaded Interactive Modals wrapped in Suspense */}
+      <Suspense fallback={null}>
+        {/* Armory Modal */}
+        <ArmoryModal
+          isOpen={isArmoryOpen}
+          onClose={() => setIsArmoryOpen(false)}
+          coins={coins}
+          setCoins={setCoins}
+          equippedHammer={equippedHammer}
+          setEquippedHammer={setEquippedHammer}
+          weapons={weapons}
+          setWeapons={setWeapons}
+        />
 
-      {/* Daily Quests Modal */}
-      <DailyQuestsModal
-        isOpen={isQuestsOpen}
-        onClose={() => setIsQuestsOpen(false)}
-        coins={coins}
-        setCoins={setCoins}
-        sessionStats={sessionStats}
-      />
+        {/* Daily Quests Modal */}
+        <DailyQuestsModal
+          isOpen={isQuestsOpen}
+          onClose={() => setIsQuestsOpen(false)}
+          coins={coins}
+          setCoins={setCoins}
+          sessionStats={sessionStats}
+        />
 
-      {/* Worldwide Live Leaderboard Modal */}
-      <LeaderboardModal
-        isOpen={isLeaderboardOpen}
-        onClose={() => setIsLeaderboardOpen(false)}
-        userHighScore={userHighScore}
-      />
+        {/* Worldwide Live Leaderboard Modal */}
+        <LeaderboardModal
+          isOpen={isLeaderboardOpen}
+          onClose={() => setIsLeaderboardOpen(false)}
+          userHighScore={userHighScore}
+        />
 
-      {/* Rewarded Ad Sponsor Modal */}
-      <RewardedAdModal
-        isOpen={isRewardedAdOpen}
-        onClose={() => setIsRewardedAdOpen(false)}
-        onRewardClaimed={handleRewardClaimed}
-      />
+        {/* Rewarded Ad Sponsor Modal */}
+        <RewardedAdModal
+          isOpen={isRewardedAdOpen}
+          onClose={() => setIsRewardedAdOpen(false)}
+          onRewardClaimed={handleRewardClaimed}
+        />
 
-      {/* High Scores & Stats Modal */}
-      <StatsModal
-        isOpen={isStatsOpen}
-        onClose={() => setIsStatsOpen(false)}
-        lang="hi"
-        sessionStats={sessionStats}
-      />
+        {/* High Scores & Stats Modal */}
+        <StatsModal
+          isOpen={isStatsOpen}
+          onClose={() => setIsStatsOpen(false)}
+          lang="hi"
+          sessionStats={sessionStats}
+        />
+
+        {/* Lucky Zen Spin Wheel Modal */}
+        <LuckyWheelModal
+          isOpen={isWheelOpen}
+          onClose={() => setIsWheelOpen(false)}
+          coins={coins}
+          setCoins={setCoins}
+          onActivateFeverBonus={activateFever}
+        />
+
+        {/* Legal Modals (Privacy, Terms, About, Contact, Disclaimer, DMCA) */}
+        <LegalModals
+          activeModal={legalModal}
+          onClose={() => setLegalModal(null)}
+          onSwitchTab={(tab) => setLegalModal(tab)}
+        />
+      </Suspense>
 
       {/* Cookie Consent Banner */}
       <CookieBanner onOpenPrivacy={() => setLegalModal('privacy')} />
 
-      {/* Lucky Zen Spin Wheel Modal */}
-      <LuckyWheelModal
-        isOpen={isWheelOpen}
-        onClose={() => setIsWheelOpen(false)}
-        coins={coins}
-        setCoins={setCoins}
-        onActivateFeverBonus={activateFever}
-      />
-
       {/* Interactive Desk Companion Mascot */}
       <ZenPetMascot
         totalSmashed={sessionStats.itemsSmashed + sessionStats.rantsDestroyed + sessionStats.bubblesPopped}
-      />
-
-      {/* Legal Modals (Privacy, Terms, About, Contact, Disclaimer, DMCA) */}
-      <LegalModals
-        activeModal={legalModal}
-        onClose={() => setLegalModal(null)}
-        onSwitchTab={(tab) => setLegalModal(tab)}
       />
     </div>
   );

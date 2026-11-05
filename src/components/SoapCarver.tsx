@@ -92,6 +92,18 @@ export const SoapCarver: React.FC<SoapCarverProps> = ({ lang, onCubeCut }) => {
     };
   }, []);
 
+  const handleContainerPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isSlicingRef.current) return;
+    const target = document.elementFromPoint(e.clientX, e.clientY) as HTMLElement | null;
+    const cubeIndex = target?.getAttribute('data-cube-index');
+    if (cubeIndex !== null && cubeIndex !== undefined) {
+      const idx = parseInt(cubeIndex, 10);
+      if (!isNaN(idx) && !cutCubes[idx]) {
+        handleSliceCube(idx);
+      }
+    }
+  };
+
   const handleReset = () => {
     setCutCubes(Array(TOTAL_BLOCKS).fill(false));
     sound.playSingingBowl(480);
@@ -145,12 +157,23 @@ export const SoapCarver: React.FC<SoapCarverProps> = ({ lang, onCubeCut }) => {
       <div className="relative p-6 md:p-12 rounded-2xl bg-slate-900/90 border border-slate-800 shadow-xl overflow-hidden flex flex-col items-center">
         {/* Soap Block Container */}
         <div
+          onPointerMove={handleContainerPointerMove}
           className="grid grid-cols-12 gap-1.5 p-4 rounded-2xl bg-slate-950 border border-slate-800 shadow-2xl touch-none cursor-crosshair"
           style={{ width: 'min(100%, 580px)' }}
         >
           {cutCubes.map((isCut, idx) => (
             <div
               key={idx}
+              data-cube-index={idx}
+              role="button"
+              tabIndex={0}
+              aria-label={`Soap cube ${idx + 1}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  handleSliceCube(idx);
+                }
+              }}
               onPointerDown={() => handlePointerDown(idx)}
               onPointerEnter={() => handlePointerEnter(idx)}
               className={`aspect-square rounded-sm transition-all duration-150 select-none ${

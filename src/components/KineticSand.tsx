@@ -130,14 +130,23 @@ export const KineticSand: React.FC<KineticSandProps> = ({ onSandSliced }) => {
     if (!isCarving) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
     // Determine which color layer was sliced
     const layerIdx = Math.floor((y / rect.height) * currentPalette.layers.length);
     const color = currentPalette.layers[Math.min(layerIdx, currentPalette.layers.length - 1)];
 
-    emitSandCrumbs(x, y, color);
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const cRect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / cRect.width;
+      const scaleY = canvas.height / cRect.height;
+      const sandX = (e.clientX - cRect.left) * scaleX;
+      const sandY = (e.clientY - cRect.top) * scaleY;
+      emitSandCrumbs(sandX, sandY, color);
+    } else {
+      emitSandCrumbs(e.clientX - rect.left, y, color);
+    }
 
     setSliceProgress((prev) => {
       const next = prev + 2.5;

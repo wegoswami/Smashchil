@@ -33,6 +33,7 @@ export const AsmrSoundboard: React.FC = () => {
           <button
             key={idx}
             onClick={pad.play}
+            aria-label={`Play ${pad.label} ASMR Sound Effect`}
             className={`flex flex-col items-center justify-center p-2.5 rounded-2xl bg-gradient-to-b ${pad.color} border transition-all duration-100 hover:scale-105 active:scale-90 cursor-pointer shadow-sm`}
           >
             <span className="text-2xl filter drop-shadow">{pad.icon}</span>

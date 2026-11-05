@@ -77,19 +77,22 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="sticky top-0 z-50 flex items-center justify-between gap-4 px-3 sm:px-6 py-3 bg-slate-950/90 backdrop-blur-md border-b-2 border-slate-800 select-none">
       {/* Zone 1: Wordmark */}
       <div className="flex items-center gap-2 shrink-0">
-        <button
-          onClick={() => setActiveMode('whack')}
-          className="text-lg sm:text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-500 to-pink-500 hover:opacity-90 transition-opacity flex items-center gap-1.5 cursor-pointer"
-        >
-          <span>⚡ SMASHCHILL</span>
-          <span className="text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full bg-rose-600/30 text-rose-400 border border-rose-500/40 font-bold uppercase tracking-wider">
-            PRO
-          </span>
-        </button>
+        <h1 className="text-lg sm:text-2xl font-black tracking-tight m-0 p-0 leading-none">
+          <button
+            onClick={() => setActiveMode('whack')}
+            className="text-lg sm:text-2xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-500 to-pink-500 hover:opacity-90 transition-opacity flex items-center gap-1.5 cursor-pointer"
+            aria-label="SmashChill Arcade — Anti-Stress Decompression Games Home"
+          >
+            <span>⚡ SMASHCHILL</span>
+            <span className="text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded-full bg-rose-600/30 text-rose-400 border border-rose-500/40 font-bold uppercase tracking-wider">
+              PRO
+            </span>
+          </button>
+        </h1>
       </div>
 
       {/* Zone 2: Fast game switcher & Article links */}
-      <nav className="hidden xl:flex items-center gap-2 text-xs font-bold text-slate-300">
+      <nav aria-label="Quick game selection" className="hidden xl:flex items-center gap-2 text-xs font-bold text-slate-300">
         {games.map((g) => {
           const isActive = activeMode === g.id;
           return (
@@ -99,6 +102,8 @@ export const Header: React.FC<HeaderProps> = ({
                 setActiveMode(g.id);
                 sound.playBonk();
               }}
+              aria-label={`Switch to ${g.label} game`}
+              aria-current={isActive ? 'page' : undefined}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
                 isActive
                   ? 'bg-rose-600 text-white shadow-md scale-105'
@@ -113,6 +118,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         <a
           href="#guides-and-faq"
+          aria-label="Read Wellness Guides and Frequently Asked Questions"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-colors"
         >
           <span>📚</span>
@@ -127,6 +133,7 @@ export const Header: React.FC<HeaderProps> = ({
           onClick={onOpenArmory}
           className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-900 border border-amber-500/40 hover:border-amber-400 text-amber-400 text-xs font-black font-mono tabular-nums transition-colors cursor-pointer shadow-inner"
           title="Open Armory"
+          aria-label={`Coin wallet with ${coins.toLocaleString()} coins. Click to open armory.`}
         >
           <span>🪙</span>
           <span>{coins.toLocaleString()}</span>
@@ -136,6 +143,7 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           onClick={onOpenArmory}
           title="Weapon Armory"
+          aria-label="Open Weapon Armory and Skins"
           className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer hidden sm:flex items-center gap-1 text-xs font-bold"
         >
           <Shield className="w-4 h-4 text-amber-400" />
@@ -146,6 +154,7 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           onClick={onOpenQuests}
           title="Daily Quests & Streak"
+          aria-label="Open Daily Quests and Reward Streak"
           className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:border-slate-700 transition-colors cursor-pointer flex items-center gap-1 text-xs font-bold"
         >
           <Gift className="w-4 h-4 text-emerald-400" />
@@ -157,6 +166,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenWheel}
             title="Lucky Zen Spin Wheel"
+            aria-label="Open Lucky Zen Spin Wheel for daily free rewards"
             className="p-2 rounded-xl bg-slate-900 border border-amber-500/40 text-amber-300 hover:text-white hover:border-amber-400 transition-colors cursor-pointer flex items-center gap-1 text-xs font-bold shadow-sm"
           >
             <span className="text-sm animate-spin-slow">🎡</span>
@@ -173,7 +183,7 @@ export const Header: React.FC<HeaderProps> = ({
               ? 'bg-purple-600/30 border-purple-500 text-purple-300 animate-pulse'
               : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-white'
           }`}
-          aria-label="Lo-Fi BGM"
+          aria-label={isBgmPlaying ? 'Pause Lo-Fi Background Music' : 'Play Lo-Fi Background Music'}
         >
           <Music className="w-4 h-4" />
           <span className="hidden lg:inline">{isBgmPlaying ? 'BGM ON' : 'BGM'}</span>
@@ -192,6 +202,8 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Worldwide Leaderboard button */}
         <button
           onClick={onOpenLeaderboard}
+          title="Worldwide Leaderboard"
+          aria-label="Open Worldwide Rankings and Leaderboard"
           className="flex items-center gap-1 px-3 py-1.5 sm:py-2 text-xs font-black text-slate-950 bg-amber-400 hover:bg-amber-300 rounded-xl transition-all shadow-md cursor-pointer hover:scale-105 active:scale-95 shrink-0"
         >
           <Trophy className="w-3.5 h-3.5" />
@@ -204,7 +216,7 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => onOpenLegal('about')}
             title="About & Help"
             className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:border-slate-700 transition-colors cursor-pointer"
-            aria-label="About and Help"
+            aria-label="About SmashChill and Help Desk"
           >
             <HelpCircle className="w-4 h-4 text-amber-400" />
           </button>
@@ -214,6 +226,7 @@ export const Header: React.FC<HeaderProps> = ({
         <button
           onClick={onToggleFullscreen}
           title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+          aria-label={isFullscreen ? 'Exit Fullscreen Mode' : 'Enter Fullscreen Mode'}
           className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white transition-colors cursor-pointer hidden sm:block"
         >
           {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
