@@ -25,6 +25,8 @@ const RantShredder = lazy(() => import('./components/RantShredder').then(m => ({
 const SmashDuelPvp = lazy(() => import('./components/SmashDuelPvp').then(m => ({ default: m.SmashDuelPvp })));
 const KineticSand = lazy(() => import('./components/KineticSand').then(m => ({ default: m.KineticSand })));
 const NewtonCradle = lazy(() => import('./components/NewtonCradle').then(m => ({ default: m.NewtonCradle })));
+const PlateSmash = lazy(() => import('./components/PlateSmash').then(m => ({ default: m.PlateSmash })));
+const TongueDrum = lazy(() => import('./components/TongueDrum').then(m => ({ default: m.TongueDrum })));
 
 // Dynamic lazy imports for modals and below-the-fold content
 const SeoContentSection = lazy(() => import('./components/SeoContentSection').then(m => ({ default: m.SeoContentSection })));
@@ -310,12 +312,30 @@ export default function App() {
       category: 'smash',
     },
     {
+      id: 'plate',
+      title: 'Plate Smash',
+      subtitle: 'Shatter ceramic plates & Kintsugi gold repair!',
+      icon: '🍽️',
+      bg: 'from-amber-600/20 to-stone-500/20 border-amber-500/50',
+      category: 'smash',
+      badge: 'POPULAR',
+    },
+    {
       id: 'smash',
       title: 'Smash Room',
       subtitle: 'Sledgehammer PC destruction!',
       icon: '💥',
       bg: 'from-purple-500/20 to-red-500/20 border-purple-500/50',
       category: 'smash',
+    },
+    {
+      id: 'drum',
+      title: 'Zen Tongue Drum',
+      subtitle: 'Tibetan 432Hz harmonic steel chimes!',
+      icon: '🧘',
+      bg: 'from-teal-600/20 to-sky-600/20 border-teal-500/50',
+      category: 'chill',
+      badge: '432 HZ',
     },
     {
       id: 'bubble',
@@ -389,7 +409,9 @@ export default function App() {
     ninja: 'Swipe or drag across flying tech gadgets to slice them in mid-air!',
     soap: 'Shave the kinetic textured cube for crisp tactile audio relaxation!',
     slap: 'Grab the bouncy stress dummy, pull back, and release to slap!',
+    plate: 'Tap the wall to fling & smash ceramic dinner plates, mugs, and vases!',
     smash: 'Click anywhere to sledgehammer CRT monitors and annoying office tech!',
+    drum: 'Tap steel petals or keys 1-8 to play tranquil 432Hz harmonic chimes!',
     bubble: 'Tap or drag across bubble wrap for infinite sensory pops!',
     zen: 'Tap water to feed koi fish, create gentle ripples, and bloom lotuses.',
     shredder: 'Type your frustration, then tap Shred or Digital Burn to destroy it.',
@@ -673,6 +695,16 @@ export default function App() {
               />
             )}
 
+            {activeMode === 'plate' && (
+              <PlateSmash
+                onItemSmashed={(pts) => {
+                  boostFever(18);
+                  setCoins((c) => c + Math.round(pts / 5));
+                  setSessionStats((s) => ({ ...s, itemsSmashed: s.itemsSmashed + 1 }));
+                }}
+              />
+            )}
+
             {activeMode === 'smash' && (
               <RageRoom
                 lang="hi"
@@ -680,6 +712,15 @@ export default function App() {
                   boostFever(25);
                   setCoins((c) => c + 25);
                   setSessionStats((s) => ({ ...s, itemsSmashed: s.itemsSmashed + 1 }));
+                }}
+              />
+            )}
+
+            {activeMode === 'drum' && (
+              <TongueDrum
+                onNotePlayed={() => {
+                  boostFever(1);
+                  setCoins((c) => c + 1);
                 }}
               />
             )}

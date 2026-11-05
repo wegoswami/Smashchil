@@ -327,6 +327,48 @@ class SoundEngine {
     oscHarmonic.stop(t + 2.2);
   }
 
+  // --- ZEN STEEL TONGUE DRUM / HANDPAN ---
+  public playTongueDrum(freq: number = 293.66) {
+    if (this.isMuted) return;
+    this.initCtx();
+    if (!this.ctx || !this.masterGain) return;
+
+    const t = this.ctx.currentTime;
+
+    // Fundamental tone
+    const oscMain = this.ctx.createOscillator();
+    const gainMain = this.ctx.createGain();
+    oscMain.type = 'sine';
+    oscMain.frequency.setValueAtTime(freq, t);
+
+    // Metallic overtone partial
+    const oscOvertone = this.ctx.createOscillator();
+    const gainOvertone = this.ctx.createGain();
+    oscOvertone.type = 'sine';
+    oscOvertone.frequency.setValueAtTime(freq * 2.756, t);
+
+    // Soft mallet attack
+    gainMain.gain.setValueAtTime(0.001, t);
+    gainMain.gain.linearRampToValueAtTime(0.55, t + 0.012);
+    gainMain.gain.exponentialRampToValueAtTime(0.0001, t + 2.5);
+
+    gainOvertone.gain.setValueAtTime(0.001, t);
+    gainOvertone.gain.linearRampToValueAtTime(0.2, t + 0.008);
+    gainOvertone.gain.exponentialRampToValueAtTime(0.0001, t + 0.9);
+
+    oscMain.connect(gainMain);
+    oscOvertone.connect(gainOvertone);
+    gainMain.connect(this.masterGain);
+    gainOvertone.connect(this.masterGain);
+
+    oscMain.start(t);
+    oscOvertone.start(t);
+    oscMain.stop(t + 2.6);
+    oscOvertone.stop(t + 1.0);
+
+    this.vibrate(18);
+  }
+
   // --- PENTATONIC WATER RIPPLE CHIME ---
   public playWaterChime(scaleIndex: number = 0) {
     if (this.isMuted) return;

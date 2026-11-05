@@ -27,7 +27,9 @@ export type GameMode =
   | 'newton'
   | 'soap'
   | 'slap'
+  | 'plate'
   | 'smash'
+  | 'drum'
   | 'bubble'
   | 'zen'
   | 'shredder';
@@ -107,7 +109,9 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'newton', label: "Newton's Cradle", icon: '⚖️', category: 'Physics' },
     { id: 'soap', label: 'Soap Slicer', icon: '🧼', category: 'ASMR' },
     { id: 'slap', label: 'Slap Dummy', icon: '🥊', category: 'Ragdoll' },
+    { id: 'plate', label: 'Plate Smash', icon: '🍽️', category: 'Shatter' },
     { id: 'smash', label: 'Smash Room', icon: '💥', category: 'Rage' },
+    { id: 'drum', label: 'Tongue Drum', icon: '🧘', category: 'Chimes' },
     { id: 'bubble', label: 'Bubble Wrap', icon: '🫧', category: 'Relax' },
     { id: 'zen', label: 'Koi Zen Pond', icon: '🌸', category: 'Calm' },
     { id: 'shredder', label: 'Rant Shredder', icon: '📄', category: 'Vent' },
