@@ -15,12 +15,15 @@ export const AsmrSoundboard: React.FC = () => {
   ];
 
   return (
-    <div className="w-full max-w-4xl mx-auto my-5 p-4 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl select-none">
+    <div className="w-full max-w-4xl mx-auto my-5 p-3.5 sm:p-5 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl select-none">
       <div className="flex items-center justify-between border-b border-slate-800 pb-2.5 mb-3 px-1">
         <div className="flex items-center gap-2">
           <span className="text-lg">🎧</span>
-          <span className="text-xs font-black uppercase tracking-wider text-slate-200">
+          <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-slate-200">
             Instant ASMR Tactile Soundboard
+          </span>
+          <span className="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-violet-500/20 text-violet-300 border border-violet-500/30">
+            8 Pads
           </span>
         </div>
         <span className="text-[11px] text-slate-400 font-bold hidden sm:inline">
@@ -28,16 +31,17 @@ export const AsmrSoundboard: React.FC = () => {
         </span>
       </div>
 
-      <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+      {/* Symmetrical Balanced Grid: 4 columns on Mobile & Tablet, 8 columns on Laptop & Desktop (Never 3 boxes) */}
+      <div className="grid grid-cols-4 md:grid-cols-8 gap-2 sm:gap-2.5 w-full">
         {pads.map((pad, idx) => (
           <button
             key={idx}
             onClick={pad.play}
             aria-label={`Play ${pad.label} ASMR Sound Effect`}
-            className={`flex flex-col items-center justify-center p-2.5 rounded-2xl bg-gradient-to-b ${pad.color} border transition-all duration-100 hover:scale-105 active:scale-90 cursor-pointer shadow-sm`}
+            className={`flex flex-col items-center justify-center p-2 sm:p-2.5 rounded-2xl bg-gradient-to-b ${pad.color} border transition-all duration-100 hover:scale-105 active:scale-90 cursor-pointer shadow-sm min-w-0 w-full`}
           >
-            <span className="text-2xl filter drop-shadow">{pad.icon}</span>
-            <span className="text-[10px] font-black mt-1 text-center truncate w-full">
+            <span className="text-xl sm:text-2xl filter drop-shadow">{pad.icon}</span>
+            <span className="text-[10px] sm:text-[11px] font-black mt-1 text-center truncate w-full px-1">
               {pad.label}
             </span>
           </button>

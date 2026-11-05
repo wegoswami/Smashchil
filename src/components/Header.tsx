@@ -460,7 +460,7 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="text-[10px] text-emerald-400 font-mono">Tap to Play</span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
               {games.map((g) => {
                 const isSelected = activeMode === g.id;
                 return (

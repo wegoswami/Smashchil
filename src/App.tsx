@@ -437,7 +437,7 @@ export default function App() {
         </div>
 
         {/* Game Selection Cards Strip - Responsive across Mobile, Tablet, Laptop & Desktop */}
-        <div className="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-2.5 mb-5" role="region" aria-label="Arcade games selector">
+        <div className="w-full max-w-4xl grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-7 gap-2.5 mb-5" role="region" aria-label="Arcade games selector">
           {visibleGames.map((g) => {
             const isCurrent = activeMode === g.id;
             return (
