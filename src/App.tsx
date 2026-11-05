@@ -347,7 +347,7 @@ export default function App() {
     gameFilter === 'all' ? games : games.filter((g) => g.category === gameFilter);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-rose-500 selection:text-white">
+    <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-rose-500 selection:text-white">
       {/* Interactive Cursor Particle Sparks */}
       <CursorSparkles activeMode={activeMode} />
 
