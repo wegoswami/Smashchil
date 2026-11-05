@@ -38,3 +38,5 @@ User-agent: AdsBot-Google
 Allow: /
 
 Sitemap: https://smashchill.online/sitemap.xml
+Agentmap: https://smashchill.online/.well-known/ai-catalog.json
+LLMs-Txt: https://smashchill.online/llms.txt

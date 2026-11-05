@@ -364,6 +364,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setIsMobileMenuOpen(false);
                     onOpenWheel();
                   }}
+                  aria-label="Open Lucky Zen Spin Wheel"
                   className="flex items-center gap-2 p-3 rounded-2xl bg-slate-900/90 border border-amber-500/30 text-amber-300 font-bold text-xs cursor-pointer shadow-sm active:scale-95"
                 >
                   <span className="text-xl">🎡</span>
@@ -376,6 +377,7 @@ export const Header: React.FC<HeaderProps> = ({
                   setIsMobileMenuOpen(false);
                   onOpenQuests();
                 }}
+                aria-label="Open Daily Quests and Achievements"
                 className="flex items-center gap-2 p-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-200 font-bold text-xs cursor-pointer active:scale-95"
               >
                 <Gift className="w-4 h-4 text-emerald-400 shrink-0" />
@@ -387,6 +389,7 @@ export const Header: React.FC<HeaderProps> = ({
                   setIsMobileMenuOpen(false);
                   onOpenArmory();
                 }}
+                aria-label="Open Armory and Weapon Upgrades"
                 className="flex items-center gap-2 p-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-200 font-bold text-xs cursor-pointer active:scale-95"
               >
                 <Shield className="w-4 h-4 text-amber-400 shrink-0" />
@@ -398,6 +401,7 @@ export const Header: React.FC<HeaderProps> = ({
                   setIsMobileMenuOpen(false);
                   onOpenLeaderboard();
                 }}
+                aria-label="Open Global Smash Leaderboards"
                 className="flex items-center gap-2 p-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-200 font-bold text-xs cursor-pointer active:scale-95"
               >
                 <Trophy className="w-4 h-4 text-amber-400 shrink-0" />
@@ -406,6 +410,7 @@ export const Header: React.FC<HeaderProps> = ({
 
               <button
                 onClick={onToggleBgm}
+                aria-label={isBgmPlaying ? 'Pause Lo-Fi Background Music' : 'Play Lo-Fi Background Music'}
                 className={`flex items-center gap-2 p-3 rounded-2xl border text-xs font-bold cursor-pointer active:scale-95 ${
                   isBgmPlaying
                     ? 'bg-purple-600/30 border-purple-500 text-purple-300'
@@ -419,6 +424,7 @@ export const Header: React.FC<HeaderProps> = ({
               <a
                 href="#guides-and-faq"
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-label="Navigate to SmashChill Wellness Blog and Stress Relief Guides"
                 className="flex items-center gap-2 p-3 rounded-2xl bg-gradient-to-r from-rose-500/20 to-amber-500/20 border border-amber-500/40 text-amber-300 font-bold text-xs"
               >
                 <BookOpen className="w-4 h-4 text-amber-400 shrink-0" />
@@ -431,6 +437,7 @@ export const Header: React.FC<HeaderProps> = ({
                     setIsMobileMenuOpen(false);
                     onOpenLegal('about');
                   }}
+                  aria-label="View About SmashChill and Clinical Information"
                   className="flex items-center gap-2 p-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-300 font-bold text-xs cursor-pointer active:scale-95"
                 >
                   <HelpCircle className="w-4 h-4 text-amber-400 shrink-0" />
@@ -443,6 +450,7 @@ export const Header: React.FC<HeaderProps> = ({
                   setIsMobileMenuOpen(false);
                   onToggleFullscreen();
                 }}
+                aria-label={isFullscreen ? 'Exit Fullscreen Mode' : 'Enter Fullscreen Mode'}
                 className="flex items-center gap-2 p-3 rounded-2xl bg-slate-900/90 border border-slate-800 text-slate-300 font-bold text-xs cursor-pointer active:scale-95"
               >
                 {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}

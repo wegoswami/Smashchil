@@ -677,6 +677,7 @@ export default function App() {
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setIsArmoryOpen(true)}
+              aria-label="Open Weapon Armory"
               className="text-slate-300 hover:text-amber-300 hover:underline cursor-pointer transition-colors"
             >
               Armory
@@ -684,6 +685,7 @@ export default function App() {
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setLegalModal('privacy')}
+              aria-label="Open Privacy Policy"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               Privacy Policy
@@ -691,6 +693,7 @@ export default function App() {
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setLegalModal('terms')}
+              aria-label="Open Terms of Service"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               Terms
@@ -698,6 +701,7 @@ export default function App() {
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setLegalModal('about')}
+              aria-label="Open About Us"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               About
@@ -705,6 +709,7 @@ export default function App() {
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setLegalModal('contact')}
+              aria-label="Open Contact Us"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               Contact
@@ -712,6 +717,7 @@ export default function App() {
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setLegalModal('disclaimer')}
+              aria-label="Open Medical and Wellness Disclaimer"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               Disclaimer
@@ -719,6 +725,7 @@ export default function App() {
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setLegalModal('dmca')}
+              aria-label="Open DMCA Copyright Policy"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               DMCA
@@ -732,6 +739,7 @@ export default function App() {
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setLegalModal('contact')}
+              aria-label="Contact SmashChill Support Team"
               className="text-amber-400/90 hover:underline cursor-pointer"
             >
               Contact Support

@@ -67,6 +67,7 @@ export const ZenPetMascot: React.FC<ZenPetMascotProps> = ({ totalSmashed }) => {
     return (
       <button
         onClick={() => setIsMinimized(false)}
+        aria-label="Open Blobby Zen Companion Mascot"
         className="fixed bottom-4 right-4 z-40 p-2.5 rounded-full bg-slate-900/90 border-2 border-pink-500/50 shadow-2xl text-xl hover:scale-110 active:scale-95 transition-all cursor-pointer flex items-center gap-1.5 backdrop-blur-md"
         title="Open Blobby Mascot"
       >
@@ -91,6 +92,7 @@ export const ZenPetMascot: React.FC<ZenPetMascotProps> = ({ totalSmashed }) => {
         {/* Quick Close Button */}
         <button
           onClick={() => setIsMinimized(true)}
+          aria-label="Minimize mascot"
           className="opacity-0 group-hover:opacity-100 p-1 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-opacity cursor-pointer mb-8"
           title="Minimize mascot"
         >
@@ -99,7 +101,16 @@ export const ZenPetMascot: React.FC<ZenPetMascotProps> = ({ totalSmashed }) => {
 
         {/* Blobby character */}
         <div
+          role="button"
+          tabIndex={0}
+          aria-label="Poke Blobby Zen Mascot for happiness"
           onClick={handlePoke}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handlePoke();
+            }
+          }}
           className={`relative w-16 h-16 sm:w-18 sm:h-18 rounded-[2rem] bg-gradient-to-tr from-pink-400 via-rose-300 to-amber-200 border-2 border-pink-300 shadow-[0_10px_25px_rgba(244,63,94,0.35)] flex flex-col items-center justify-center cursor-pointer transition-transform duration-150 active:scale-90 hover:scale-105 active:rotate-6 ${
             expression === 'wobble' ? 'animate-bounce' : ''
           }`}
