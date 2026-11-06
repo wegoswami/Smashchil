@@ -41,23 +41,62 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
     return localStorage.getItem('smashchill_newsletter_subscribed') === 'true';
   });
 
+  const handleOpenArticle = (art: BlogArticle) => {
+    setSelectedBlogArticle(art);
+    if (window.location.pathname !== `/posts/${art.slug}`) {
+      window.history.pushState({ type: 'post', slug: art.slug }, '', `/posts/${art.slug}`);
+    }
+    document.title = `${art.title} | Smash and Chill`;
+  };
+
+  const handleCloseArticle = () => {
+    setSelectedBlogArticle(null);
+    if (window.location.pathname.startsWith('/posts/') || window.location.pathname.startsWith('/blog/')) {
+      window.history.pushState(null, '', '/#guides-and-faq');
+      document.title = 'Smash and Chill | Free Online Stress Relief & Anti-Stress Arcade Games';
+    }
+  };
+
   React.useEffect(() => {
-    const handleHash = () => {
+    const handleRoute = () => {
+      const pathname = window.location.pathname;
       const hash = window.location.hash;
+
+      // 1. Check distinct /posts/:slug or /blog/:slug
+      const postMatch = pathname.match(/^\/(?:posts|blog)\/([^/]+)/);
+      if (postMatch) {
+        const slug = postMatch[1];
+        const match = BLOG_ARTICLES.find((a) => a.slug === slug || a.id === slug);
+        if (match) {
+          setSelectedBlogArticle(match);
+          setActiveArticleTab('blog');
+          document.title = `${match.title} | Smash and Chill`;
+          return;
+        }
+      }
+
+      // 2. Check hash route
       if (hash.startsWith('#blog-')) {
         const slug = hash.replace('#blog-', '');
         const match = BLOG_ARTICLES.find((a) => a.slug === slug || a.id === slug);
         if (match) {
           setSelectedBlogArticle(match);
           setActiveArticleTab('blog');
+          document.title = `${match.title} | Smash and Chill`;
+          return;
         }
-      } else if (hash === '#blog' || hash === '#blogs') {
+      } else if (hash === '#blog' || hash === '#blogs' || pathname === '/posts' || pathname === '/blog') {
         setActiveArticleTab('blog');
       }
     };
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+
+    handleRoute();
+    window.addEventListener('popstate', handleRoute);
+    window.addEventListener('hashchange', handleRoute);
+    return () => {
+      window.removeEventListener('popstate', handleRoute);
+      window.removeEventListener('hashchange', handleRoute);
+    };
   }, []);
 
   const handleSubscribe = (e: React.FormEvent) => {
