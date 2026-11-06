@@ -518,7 +518,7 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
                   </div>
 
                   <a
-                    href={`/blog/${BLOG_ARTICLES[0].slug}`}
+                    href={`/posts/${BLOG_ARTICLES[0].slug}`}
                     onClick={(e) => {
                       e.preventDefault();
                       setSelectedBlogArticle(BLOG_ARTICLES[0]);
@@ -590,7 +590,7 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
 
                       <div className="flex items-center gap-2">
                         <a
-                          href={`/blog/${art.slug}`}
+                          href={`/posts/${art.slug}`}
                           onClick={(e) => {
                             e.preventDefault();
                             setSelectedBlogArticle(art);

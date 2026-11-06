@@ -3,6 +3,30 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/posts",
+      "destination": "/posts/index.html"
+    },
+    {
+      "source": "/posts/:slug",
+      "destination": "/posts/:slug/index.html"
+    },
+    {
+      "source": "/post/:slug",
+      "destination": "/posts/:slug/index.html"
+    },
+    {
+      "source": "/pages",
+      "destination": "/pages/index.html"
+    },
+    {
+      "source": "/pages/:slug",
+      "destination": "/pages/:slug/index.html"
+    },
+    {
+      "source": "/page/:slug",
+      "destination": "/pages/:slug/index.html"
+    },
+    {
       "source": "/blog",
       "destination": "/blog/index.html"
     },
@@ -27,7 +51,19 @@
       "destination": "/contact/index.html"
     },
     {
-      "source": "/((?!blog|privacy|terms|about|contact|assets|icon\\.svg|favicon\\.ico|manifest\\.json|robots\\.txt|sitemap\\.xml|ads\\.txt|llms\\.txt|\\.well-known).*)",
+      "source": "/disclaimer",
+      "destination": "/disclaimer/index.html"
+    },
+    {
+      "source": "/dmca",
+      "destination": "/dmca/index.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/faq/index.html"
+    },
+    {
+      "source": "/((?!posts|post|pages|page|blog|privacy|terms|about|contact|disclaimer|dmca|faq|assets|icon\\.svg|favicon\\.ico|manifest\\.json|robots\\.txt|sitemap\\.xml|ads\\.txt|llms\\.txt|\\.well-known).*)",
       "destination": "/index.html"
     }
   ],
@@ -42,7 +78,7 @@
       ]
     },
     {
-      "source": "/(blog|privacy|terms|about|contact)(.*)",
+      "source": "/(posts|post|pages|page|blog|privacy|terms|about|contact|disclaimer|dmca|faq)(.*)",
       "headers": [
         {
           "key": "Cache-Control",

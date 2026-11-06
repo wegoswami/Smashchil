@@ -809,14 +809,21 @@ export default function App() {
             </button>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <a
-              href="/blog"
+              href="/posts"
               className="text-slate-300 hover:text-amber-300 hover:underline cursor-pointer transition-colors"
             >
-              Wellness Blog
+              Research Posts
             </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <a
-              href="/privacy"
+              href="/pages"
+              className="text-slate-300 hover:text-amber-300 hover:underline cursor-pointer transition-colors"
+            >
+              Pages Directory
+            </a>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <a
+              href="/pages/privacy-policy"
               onClick={(e) => { e.preventDefault(); setLegalModal('privacy'); }}
               aria-label="Open Privacy Policy"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
@@ -825,7 +832,7 @@ export default function App() {
             </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <a
-              href="/terms"
+              href="/pages/terms-of-service"
               onClick={(e) => { e.preventDefault(); setLegalModal('terms'); }}
               aria-label="Open Terms of Service"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
@@ -834,7 +841,7 @@ export default function App() {
             </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <a
-              href="/about"
+              href="/pages/about"
               onClick={(e) => { e.preventDefault(); setLegalModal('about'); }}
               aria-label="Open About Us"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
@@ -843,7 +850,7 @@ export default function App() {
             </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <a
-              href="/contact"
+              href="/pages/contact"
               onClick={(e) => { e.preventDefault(); setLegalModal('contact'); }}
               aria-label="Open Contact Us"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
@@ -851,21 +858,23 @@ export default function App() {
               Contact
             </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
-            <button
-              onClick={() => setLegalModal('disclaimer')}
+            <a
+              href="/pages/medical-disclaimer"
+              onClick={(e) => { e.preventDefault(); setLegalModal('disclaimer'); }}
               aria-label="Open Medical and Wellness Disclaimer"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               Disclaimer
-            </button>
+            </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
-            <button
-              onClick={() => setLegalModal('dmca')}
+            <a
+              href="/pages/dmca-policy"
+              onClick={(e) => { e.preventDefault(); setLegalModal('dmca'); }}
               aria-label="Open DMCA Copyright Policy"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               DMCA
-            </button>
+            </a>
           </div>
         </div>
         <div className="max-w-5xl mx-auto mt-3 pt-3 border-t border-slate-900/60 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-500 gap-2">
