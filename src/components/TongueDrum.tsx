@@ -86,10 +86,20 @@ export const TongueDrum: React.FC<TongueDrumProps> = ({ onNotePlayed }) => {
     }
   };
 
-  // Ambient rain sound toggle
+  // Ambient zen rain sound toggle
   const toggleRain = () => {
-    setIsRainActive(!isRainActive);
-    sound.toggleStation('zen');
+    const nextState = !isRainActive;
+    setIsRainActive(nextState);
+    if (nextState) {
+      sound.setStation('zen');
+      if (!sound.getBgmPlaying()) {
+        sound.toggleBgm();
+      }
+    } else {
+      if (sound.getBgmPlaying()) {
+        sound.toggleBgm();
+      }
+    }
   };
 
   useEffect(() => {

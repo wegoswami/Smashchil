@@ -808,37 +808,48 @@ export default function App() {
               Armory
             </button>
             <span aria-hidden="true" className="text-slate-700">·</span>
-            <button
-              onClick={() => setLegalModal('privacy')}
+            <a
+              href="/blog"
+              className="text-slate-300 hover:text-amber-300 hover:underline cursor-pointer transition-colors"
+            >
+              Wellness Blog
+            </a>
+            <span aria-hidden="true" className="text-slate-700">·</span>
+            <a
+              href="/privacy"
+              onClick={(e) => { e.preventDefault(); setLegalModal('privacy'); }}
               aria-label="Open Privacy Policy"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               Privacy Policy
-            </button>
+            </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
-            <button
-              onClick={() => setLegalModal('terms')}
+            <a
+              href="/terms"
+              onClick={(e) => { e.preventDefault(); setLegalModal('terms'); }}
               aria-label="Open Terms of Service"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               Terms
-            </button>
+            </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
-            <button
-              onClick={() => setLegalModal('about')}
+            <a
+              href="/about"
+              onClick={(e) => { e.preventDefault(); setLegalModal('about'); }}
               aria-label="Open About Us"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               About
-            </button>
+            </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
-            <button
-              onClick={() => setLegalModal('contact')}
+            <a
+              href="/contact"
+              onClick={(e) => { e.preventDefault(); setLegalModal('contact'); }}
               aria-label="Open Contact Us"
               className="hover:text-amber-400 hover:underline cursor-pointer transition-colors"
             >
               Contact
-            </button>
+            </a>
             <span aria-hidden="true" className="text-slate-700">·</span>
             <button
               onClick={() => setLegalModal('disclaimer')}

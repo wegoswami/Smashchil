@@ -517,13 +517,18 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
                     </div>
                   </div>
 
-                  <button
-                    onClick={() => setSelectedBlogArticle(BLOG_ARTICLES[0])}
+                  <a
+                    href={`/blog/${BLOG_ARTICLES[0].slug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setSelectedBlogArticle(BLOG_ARTICLES[0]);
+                    }}
+                    aria-label={`Read clinical study: ${BLOG_ARTICLES[0].title}`}
                     className="px-5 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-extrabold text-xs shadow-lg transition-transform hover:scale-105 active:scale-95 flex items-center gap-2 cursor-pointer"
                   >
-                    <span>Read Full Article & Study</span>
+                    <span>Read Full Article &amp; Study</span>
                     <ArrowRight className="w-4 h-4" />
-                  </button>
+                  </a>
                 </div>
               </div>
             )}
@@ -584,13 +589,18 @@ export const SeoContentSection: React.FC<SeoContentSectionProps> = ({ onSelectGa
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => setSelectedBlogArticle(art)}
+                        <a
+                          href={`/blog/${art.slug}`}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSelectedBlogArticle(art);
+                          }}
+                          aria-label={`Read article: ${art.title}`}
                           className="flex-1 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                         >
                           <BookOpen className="w-3.5 h-3.5 text-amber-400" />
                           <span>Read Article</span>
-                        </button>
+                        </a>
 
                         {onSelectGame && (
                           <button

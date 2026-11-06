@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "SmashChill — Free Online Arcade & Stress Relief Mini Games",
-  "short_name": "SmashChill",
-  "description": "Play free online arcade games on SmashChill: Whack alarms, slice laptops like a ninja, and relax with koi fish.",
+  "name": "Smash and Chill — Free Online Arcade & Stress Relief Mini Games",
+  "short_name": "Smash & Chill",
+  "description": "Play Smash and Chill free online: 15 stress-relief mini games including Plate Smash, Zen Tongue Drum, Whack-A-Stress, and Koi Pond.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
